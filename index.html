@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGORA - HUB DE FORMATION pHARe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&family=Courier+New:wght@700&family=Orbitron:wght@700&display=swap');
+
+        :root { 
+            --neon: #00d4ff; 
+            --neon-red: #ff0044;
+            --neon-green: #00ff88;
+            --neon-gold: #ffd700;
+            --dark: #0a0a12; 
+            --panel: #16213e; 
+            --locked: #2a2a35;
+        }
+        
+        body { background: var(--dark); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; text-align: center; }
+        
+        h1 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 5px; color: var(--neon); margin-bottom: 5px; font-weight: 800; text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+        .subtitle { color: #888; margin-bottom: 40px; font-style: italic; font-size: 0.9em; }
+
+        /* --- ARCADE --- */
+        .arcade-btn {
+            display: none; margin: 0 auto 30px auto;
+            background: transparent; border: 2px solid var(--neon-gold); color: var(--neon-gold);
+            padding: 10px 30px; font-family: 'Courier New', monospace; font-weight: bold;
+            cursor: pointer; text-decoration: none; width: fit-content;
+            text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            transition: all 0.3s;
+            animation: pulse-gold 2s infinite;
+        }
+        .arcade-btn:hover { background: var(--neon-gold); color: #000; box-shadow: 0 0 25px var(--neon-gold); }
+        @keyframes pulse-gold { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* --- DECODEUR --- */
+        .decoder-zone {
+            background: #000; border: 1px solid var(--neon); padding: 25px;
+            max-width: 600px; margin: 0 auto 50px auto; border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1); position: relative;
+        }
+        .decoder-zone::before { content: "MODULE DE VALIDATION"; position: absolute; top: -10px; left: 20px; background: var(--dark); padding: 0 10px; color: var(--neon); font-size: 0.8em; font-weight: bold; }
+        
+        input[type="text"] {
+            width: 70%; padding: 12px; background: #1a1a1a; border: 1px solid #444; 
+            color: #fff; font-family: 'Courier New', monospace; font-size: 1.1em; text-align: center; outline: none;
+        }
+        input[type="text"]:focus { border-color: var(--neon); }
+        
+        button.action-btn {
+            padding: 12px 25px; background: var(--neon); color: #000; border: none; 
+            font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s;
+        }
+        button.action-btn:hover { background: #fff; box-shadow: 0 0 15px var(--neon); }
+
+        /* --- MATRICE --- */
+        .matrix-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
+        
+        .pillar-column {
+            background: rgba(22, 33, 62, 0.5); border-radius: 12px; padding: 15px;
+            width: 300px; border-top: 4px solid #555; display: flex; flex-direction: column; gap: 15px;
+        }
+        .pillar-title { font-size: 1.3em; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .module-card {
+            background: var(--locked); padding: 15px; border-radius: 6px;
+            border-left: 4px solid #444; text-align: left; position: relative;
+            transition: all 0.3s ease;
+        }
+        .module-card.locked { opacity: 0.6; pointer-events: none; filter: grayscale(1); }
+        .module-card.open { background: var(--panel); border-left-color: var(--neon); cursor: default; }
+        .module-card.done { background: #0f2e20; border-left-color: var(--neon-green); }
+
+        .module-card h4 { margin: 0 0 5px 0; font-size: 1.1em; }
+        .status-txt { font-size: 0.7em; font-weight: bold; text-transform: uppercase; float: right; margin-top: 3px; }
+        
+        .btn-launch { 
+            display: block; width: 100%; padding: 10px; margin-top: 10px; 
+            background: transparent; border: 1px solid var(--neon); color: var(--neon);
+            text-decoration: none; text-align: center; font-size: 0.9em; font-weight: bold;
+            transition: 0.3s; box-sizing: border-box;
+        }
+        .btn-launch:hover { background: var(--neon); color: #000; }
+
+        .btn-diploma {
+            display: block; width: 100%; padding: 8px; margin-top: 5px;
+            background: #d4af37; color: #000; border: none; cursor: pointer;
+            font-size: 0.8em; font-weight: bold;
+        }
+
+        /* --- FORGE (ADMIN) --- */
+        .forge-toggle { position: fixed; bottom: 10px; right: 10px; opacity: 0.3; cursor: pointer; font-size: 2em; }
+        .forge-toggle:hover { opacity: 1; }
+
+        .forge-container {
+            display: none; background: #111; border: 2px dashed var(--neon-red); 
+            margin: 40px auto; max-width: 800px; padding: 25px;
+            border-radius: 10px; text-align: left; position: relative;
+            box-shadow: 0 0 50px rgba(255, 0, 68, 0.2);
+        }
+        .forge-container::before {
+            content: "/// MODE ADMINISTRATEUR : GÉNÉRATEUR DE SÉSAMES ///";
+            position: absolute; top: -12px; left: 20px; background: #111; 
+            color: var(--neon-red); font-weight: bold; padding: 0 10px;
+        }
+        
+        .forge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .forge-full { grid-column: 1 / -1; }
+        
+        .forge-label { color: #888; font-size: 0.8em; display: block; margin-bottom: 5px; }
+        .forge-input { 
+            width: 100%; background: #000; color: #fff; border: 1px solid #555; 
+            padding: 10px; box-sizing: border-box; font-family: monospace;
+        }
+        
+        .forge-btn {
+            background: var(--neon-red); color: #fff; border: none; padding: 15px;
+            width: 100%; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+        .forge-btn:hover { background: #fff; color: #000; }
+
+        .reset-btn {
+            background: transparent; border: 1px solid #555; color: #555; 
+            padding: 10px; margin-top: 20px; width: 100%; cursor: pointer; font-size: 0.8em;
+        }
+        .reset-btn:hover { border-color: red; color: red; }
+
+        .forge-output {
+            margin-top: 20px; padding: 15px; background: #000; border: 1px solid var(--neon-green);
+            color: var(--neon-green); font-family: 'Courier New', monospace; word-break: break-all;
+            cursor: pointer; position: relative; display: none;
+        }
+        .forge-output:hover::after {
+            content: "COPIER LE CODE"; position: absolute; top: 0; right: 0;
+            background: var(--neon-green); color: #000; font-size: 0.7em; padding: 2px 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>AGORA <span style="color:#fff">///</span> MATRICE pHARe</h1>
+    <p class="subtitle">Plateforme Unifiée de Formation et de Prévention</p>
+
+    <a href="#" id="arcadeLink" class="arcade-btn" onclick="launchArcade()" target="_blank">
+        👾 ZONE DÉTENTE (Lvl.<span id="arcadeLvl">1</span>)
+    </a>
+
+    <div class="decoder-zone">
+        <input type="text" id="inputToken" placeholder="Coller le code ici (ou code maître)..." autocomplete="off">
+        <button class="action-btn" onclick="processInput()">VALIDER</button>
+        <div id="feedback" style="height:20px; margin-top:10px; font-weight:bold; font-size: 0.9em;"></div>
+    </div>
+
+    <div class="matrix-container" id="matrixRoot"></div>
+
+    <div class="forge-toggle" onclick="toggleForge()">🛠️</div>
+    <div id="forgePanel" class="forge-container">
+        <p style="color:#aaa; font-size:0.9em; margin-top:0">
+            Cet outil génère un sésame pour dépanner les élèves. Le code simule la réussite du module précédent.
+        </p>
+
+        <div class="forge-grid">
+            <div>
+                <label class="forge-label">1. PILIER CONCERNÉ</label>
+                <select id="forgePillar" class="forge-input" onchange="updateForgeLevels()"></select>
+            </div>
+            <div>
+                <label class="forge-label">2. NIVEAU À DÉBLOQUER (CIBLE)</label>
+                <select id="forgeLevel" class="forge-input"></select>
+            </div>
+            <div>
+                <label class="forge-label">NOM ÉLÈVE</label>
+                <input type="text" id="forgeName" class="forge-input" placeholder="Ex: DUPONT Thomas">
+            </div>
+            <div>
+                <label class="forge-label">CLASSE</label>
+                <input type="text" id="forgeClass" class="forge-input" placeholder="Ex: 4ème B">
+            </div>
+            <div class="forge-full">
+                <button class="forge-btn" onclick="forgeToken()">FORGER LE SÉSAME</button>
+            </div>
+        </div>
+
+        <div id="forgeResult" class="forge-output" onclick="copyToClipboard(this.innerText)"></div>
+        <button class="reset-btn" onclick="hardReset()">⚠️ EFFACER TOUTE LA PROGRESSION (RAZ)</button>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. CONFIGURATION
+        // ============================================================
+        const CONFIG = {
+            pillars: {
+                "NUM": {
+                    title: "PILIER NUMÉRIQUE",
+                    color: "#00d4ff",
+                    modules: [
+                        { id: "NUMERIQUE_01", file: "PIX_pHARe_Module_NUMERIQUE_01.html", name: "La Machine à Attention" },
+                        { id: "NUMERIQUE_02", file: "PIX_pHARe_Module_NUMERIQUE_02.html", name: "Les Architectes de l'Ombre" },
+                    ]
+                },
+                "JUR": {
+                    title: "PILIER JURIDIQUE",
+                    color: "#ff0044",
+                    modules: [
+                        // On utilise ici l'ID logique. La validation intelligente fera le lien avec "v1"
+                        { id: "JURIDIQUE_01", file: "PIX_pHARe_Module_Juridique_01.html", name: "L'Armure Juridique" },
+                        { id: "JURIDIQUE_02", file: "PIX_pHARe_Module_JURIDIQUE_02.html", name: "La Mécanique des Ombres" },
+                        { id: "JURIDIQUE_03", file: "PIX_pHARe_Module_JURIDIQUE_03.html", name: "Le Spectre Numérique" },
+                        { id: "JURIDIQUE_04", file: "PIX_pHARe_Module_JURIDIQUE_04.html", name: "Le Protocole pHARe" },
+                        { id: "JURIDIQUE_05", file: "PIX_pHARe_Module_JURIDIQUE_05.html", name: "Maître de l'Harmonie" }
+                    ]
+                }
+            },
+            adminKey: "AGORA-ADMIN"
+        };
+
+        // ============================================================
+        // 2. MOTEUR D'AFFICHAGE
+        // ============================================================
+        function renderMatrix() {
+            const root = document.getElementById('matrixRoot');
+            root.innerHTML = "";
+
+            for (const [pillarKey, data] of Object.entries(CONFIG.pillars)) {
+                const col = document.createElement('div');
+                col.className = 'pillar-column';
+                col.style.borderTopColor = data.color;
+                col.innerHTML = `<div class="pillar-title" style="color:${data.color}">${data.title}</div>`;
+
+                const savedLevel = parseInt(localStorage.getItem(`PROG_${pillarKey}`) || "0");
+
+                data.modules.forEach((mod, index) => {
+                    const levelNum = index + 1;
+                    const isDone = savedLevel >= levelNum;
+                    const isOpen = (levelNum === 1) || (savedLevel >= levelNum - 1);
+
+                    let statusClass = "locked";
+                    let statusText = "🔒 VERROUILLÉ";
+                    if (isDone) { statusClass = "done"; statusText = "✅ VALIDÉ"; }
+                    else if (isOpen) { statusClass = "open"; statusText = "🟢 DISPONIBLE"; }
+
+                    const cardHtml = `
+                        <div class="module-card ${statusClass}">
+                            <span class="status-txt" style="color:${isDone ? '#00ff88' : (isOpen ? '#fff' : '#555')}">${statusText}</span>
+                            <h4>NIVEAU ${levelNum}</h4>
+                            <div style="font-size:0.9em; margin-bottom:5px; color:#aaa">${mod.name}</div>
+                            
+                            ${isOpen ? `<a href="${mod.file}" target="_blank" class="btn-launch">LANCER MISSION</a>` : ''}
+                            ${isDone ? `<button onclick="downloadDiploma('${pillarKey}', ${levelNum})" class="btn-diploma">CERTIFICAT</button>` : ''}
+                        </div>
+                    `;
+                    col.innerHTML += cardHtml;
+                });
+                root.appendChild(col);
+            }
+            updateArcadeButton();
+        }
+
+        // ============================================================
+        // 3. LOGIQUE ARCADE
+        // ============================================================
+        function updateArcadeButton() {
+            let total = 0;
+            for (const [key, _] of Object.entries(CONFIG.pillars)) {
+                total += parseInt(localStorage.getItem(`PROG_${key}`) || "0");
+            }
+            const btn = document.getElementById('arcadeLink');
+            if (total > 0) {
+                btn.style.display = 'block'; 
+                document.getElementById('arcadeLvl').innerText = total;
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        function launchArcade() {
+            let total = 0;
+            for (const [key, _] of Object.entries(CONFIG.pillars)) {
+                total += parseInt(localStorage.getItem(`PROG_${key}`) || "0");
+            }
+            window.open(`BONUS_ARCADE.html?power=${total}`, '_blank');
+        }
+
+        // ============================================================
+        // 4. LOGIQUE DE VALIDATION (FUZZY + ROBUSTE)
+        // ============================================================
+        function processInput() {
+            let input = document.getElementById('inputToken').value.trim();
+            const feedback = document.getElementById('feedback');
+            feedback.innerHTML = "";
+
+            // ADMIN
+            if (input === CONFIG.adminKey) {
+                toggleForge();
+                feedback.style.color = "var(--neon-red)";
+                feedback.innerText = "MODE ADMIN ACTIF.";
+                document.getElementById('inputToken').value = "";
+                return;
+            }
+
+            let data = null;
+            // DECODAGE
+            try {
+                // Essai 1 : Format Complexe (UTF8)
+                const jsonStr = decodeURIComponent(escape(atob(input)));
+                data = JSON.parse(jsonStr);
+            } catch (e1) {
+                try {
+                    // Essai 2 : Format Simple (Base64 direct)
+                    const jsonStr = atob(input);
+                    data = JSON.parse(jsonStr);
+                } catch (e2) {
+                    alert("❌ Code illisible. Assure-toi de n'avoir copié que le code (pas d'espaces).");
+                    return;
+                }
+            }
+
+            // ANALYSE
+            try {
+                let foundPillar = null;
+                let foundLevel = 0;
+                
+                // On récupère l'ID, peu importe son nom de variable (m, mod, id...)
+                const codeID = data.m || data.mod || data.id || "";
+                const isFinished = (data.f === true || data.finished === true);
+
+                // Recherche correspondance
+                for (const [pKey, pData] of Object.entries(CONFIG.pillars)) {
+                    pData.modules.forEach((mod, idx) => {
+                        // Match Strict
+                        if (mod.id === codeID) {
+                            foundPillar = pKey;
+                            foundLevel = idx + 1;
+                        } 
+                        // Match Souple (Si "v1" vs "01")
+                        else if (mod.id.includes("JUR") && codeID.includes("JUR")) {
+                            const n1 = parseInt(mod.id.match(/\d+/)?.[0] || "99");
+                            const n2 = parseInt(codeID.match(/\d+/)?.[0] || "0");
+                            if (n1 === n2) {
+                                foundPillar = pKey;
+                                foundLevel = idx + 1;
+                            }
+                        }
+                        else if (mod.id.includes("NUM") && codeID.includes("NUM")) {
+                            const n1 = parseInt(mod.id.match(/\d+/)?.[0] || "99");
+                            const n2 = parseInt(codeID.match(/\d+/)?.[0] || "0");
+                            if (n1 === n2) {
+                                foundPillar = pKey;
+                                foundLevel = idx + 1;
+                            }
+                        }
+                    });
+                }
+
+                if (foundPillar) {
+                    if (isFinished) {
+                        // C'est ICI qu'il faut la fonction saveProgress !
+                        saveProgress(foundPillar, foundLevel, data);
+                        
+                        feedback.style.color = "#00ff88";
+                        feedback.innerText = "✅ VALIDÉ ! Chargement...";
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        alert("⚠️ Code valide, mais module non terminé (f: false).");
+                    }
+                } else {
+                    alert(`⛔ ID INCONNU : "${codeID}"\nLe Hub ne reconnaît pas ce module.`);
+                }
+            } catch (e) {
+                alert("Erreur logique: " + e.message);
+                console.error(e);
+            }
+        }
+
+        // ============================================================
+        // 5. FONCTION DE SAUVEGARDE (Celle qui manquait !)
+        // ============================================================
+        function saveProgress(pillarKey, level, fullData) {
+            const current = parseInt(localStorage.getItem(`PROG_${pillarKey}`) || "0");
+            
+            // On ne met à jour que si on progresse
+            if (level > current) {
+                localStorage.setItem(`PROG_${pillarKey}`, level);
+            }
+            
+            // On sauvegarde le certificat
+            localStorage.setItem(`CERT_${pillarKey}_${level}`, JSON.stringify(fullData));
+            
+            // On rafraîchit l'affichage
+            renderMatrix();
+        }
+
+        // ============================================================
+        // 6. FORGE & TOOLS
+        // ============================================================
+        function toggleForge() {
+            const f = document.getElementById('forgePanel');
+            if (f.style.display === 'none' || f.style.display === '') {
+                f.style.display = 'block';
+                initForge();
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                f.style.display = 'none';
+            }
+        }
+
+        function initForge() {
+            const pSelect = document.getElementById('forgePillar');
+            pSelect.innerHTML = "";
+            for (const [key, data] of Object.entries(CONFIG.pillars)) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.innerText = data.title;
+                pSelect.appendChild(opt);
+            }
+            updateForgeLevels();
+        }
+
+        function updateForgeLevels() {
+            const pKey = document.getElementById('forgePillar').value;
+            const lSelect = document.getElementById('forgeLevel');
+            lSelect.innerHTML = "";
+            
+            if(!pKey) return;
+            const modules = CONFIG.pillars[pKey].modules;
+
+            modules.forEach((mod, index) => {
+                const levelTarget = index + 1; 
+                // Pour entrer au niveau 2, on forge le code du niveau 1
+                if (levelTarget > 1) {
+                    const opt = document.createElement('option');
+                    opt.value = index; 
+                    opt.innerText = `Ouvrir NIVEAU ${levelTarget} (Simuler fin Niv.${levelTarget-1})`;
+                    lSelect.appendChild(opt);
+                }
+            });
+        }
+
+        function forgeToken() {
+            const pKey = document.getElementById('forgePillar').value;
+            const targetIdx = parseInt(document.getElementById('forgeLevel').value);
+            const name = document.getElementById('forgeName').value.trim() || "ADMIN";
+            const classe = document.getElementById('forgeClass').value.trim() || "STAFF";
+
+            const previousModule = CONFIG.pillars[pKey].modules[targetIdx - 1];
+
+            if (!previousModule) {
+                alert("Erreur: pas de module précédent.");
+                return;
+            }
+
+            const payload = {
+                v: 1,
+                d: new Date().toISOString(),
+                m: previousModule.id, // ID du module précédent
+                mv: "FORGE",
+                n: name,
+                c: classe,
+                l: 4, s: 100, x: 999, q: 10, dj: 100,
+                f: true // Sésame
+            };
+
+            try {
+                const jsonStr = JSON.stringify(payload);
+                const token = btoa(unescape(encodeURIComponent(jsonStr)));
+                
+                const out = document.getElementById('forgeResult');
+                out.style.display = 'block';
+                out.innerText = token;
+                out.style.borderColor = "#fff";
+                setTimeout(() => out.style.borderColor = "var(--neon-green)", 300);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("CODE COPIÉ !");
+            });
+        }
+
+        function hardReset() {
+            if(confirm("🚨 EFFACER TOUTE LA PROGRESSION ?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function downloadDiploma(pillarKey, level) {
+            const raw = localStorage.getItem(`CERT_${pillarKey}_${level}`);
+            if(!raw) return;
+            const data = JSON.parse(raw);
+            const modName = CONFIG.pillars[pillarKey].modules[level-1].name;
+
+            const content = `
+╔══════════════════════════════════════════════════╗
+║             AGORA - PROTOCOLE pHARe              ║
+║              CERTIFICAT DE RÉUSSITE              ║
+╚══════════════════════════════════════════════════╝
+DÉCERNÉ À   : ${data.n || data.who}
+CLASSE      : ${data.c || data.cls}
+DATE        : ${new Date(data.d).toLocaleDateString()}
+MODULE      : ${modName.toUpperCase()}
+Signature   : ${btoa((data.m || "UNK") + (data.n || "UNK"))}
+----------------------------------------------------`;
+            const blob = new Blob([content], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `DIPLOME_${(data.n || "ELEVE").replace(/\s/g,'_')}_NIV${level}.txt`;
+            a.click();
+        }
+
+        // START
+        renderMatrix();
+
+    </script>
+</body>
+</html>
