@@ -200,23 +200,34 @@
                     modules: [
                         { id: "NUMERIQUE_01", file: "PIX_pHARe_Module_NUMERIQUE_01.html", name: "La Machine à Attention" },
                         { id: "NUMERIQUE_02", file: "PIX_pHARe_Module_NUMERIQUE_02.html", name: "Les Architectes de l'Ombre" },
+                        { id: "NUMERIQUE_03", file: "PIX_pHARe_Module_NUMERIQUE_03.html", name: "Bulles & Miroirs" },
+                        { id: "NUMERIQUE_04", file: "PIX_pHARe_Module_NUMERIQUE_04.html", name: "Tes Droits, Ton Armure" },
+                        { id: "NUMERIQUE_05", file: "PIX_pHARe_Module_NUMERIQUE_05.html", name: "Maître de ton Feed" }
                     ]
                 },
                 "JUR": {
                     title: "PILIER JURIDIQUE",
                     color: "#ff0044",
                     modules: [
-                        // On utilise ici l'ID logique. La validation intelligente fera le lien avec "v1"
-                        { id: "JURIDIQUE_01", file: "PIX_pHARe_Module_Juridique_01.html", name: "L'Armure Juridique" },
+                        // Note : "id" doit correspondre à ce que le module envoie ou attend.
+                        // "file" est le nom réel du fichier sur ton ordi/GitHub.
+                        { id: "JURIDIQUE_01", file: "PIX_pHARe_Module_Juridique_v1.html", name: "L'Armure Juridique" },
                         { id: "JURIDIQUE_02", file: "PIX_pHARe_Module_JURIDIQUE_02.html", name: "La Mécanique des Ombres" },
                         { id: "JURIDIQUE_03", file: "PIX_pHARe_Module_JURIDIQUE_03.html", name: "Le Spectre Numérique" },
                         { id: "JURIDIQUE_04", file: "PIX_pHARe_Module_JURIDIQUE_04.html", name: "Le Protocole pHARe" },
                         { id: "JURIDIQUE_05", file: "PIX_pHARe_Module_JURIDIQUE_05.html", name: "Maître de l'Harmonie" }
                     ]
+                },
+                "GRO": {
+                    title: "PILIER DYNAMIQUE DE GROUPE",
+                    color: "#a855f7",
+                    modules: [
+                        { id: "GROUPE_01", file: "PIX_pHARe_Module_GROUPE_01.html", name: "Le Triangle Infernal" }
+                    ]
                 }
             },
             adminKey: "AGORA-ADMIN"
-        };
+        }; // <=== C'ÉTAIT ICI L'ERREUR, IL MANQUAIT L'ACCOLADE ET LE POINT-VIRGULE !
 
         // ============================================================
         // 2. MOTEUR D'AFFICHAGE
@@ -257,7 +268,10 @@
                 });
                 root.appendChild(col);
             }
-            updateArcadeButton();
+            // Mise à jour de l'Arcade
+            if (typeof updateArcadeButton === "function") {
+                updateArcadeButton();
+            }
         }
 
         // ============================================================
@@ -293,7 +307,6 @@
             const feedback = document.getElementById('feedback');
             feedback.innerHTML = "";
 
-            // ADMIN
             if (input === CONFIG.adminKey) {
                 toggleForge();
                 feedback.style.color = "var(--neon-red)";
@@ -303,7 +316,6 @@
             }
 
             let data = null;
-            // DECODAGE
             try {
                 // Essai 1 : Format Complexe (UTF8)
                 const jsonStr = decodeURIComponent(escape(atob(input)));
@@ -319,16 +331,12 @@
                 }
             }
 
-            // ANALYSE
             try {
                 let foundPillar = null;
                 let foundLevel = 0;
-                
-                // On récupère l'ID, peu importe son nom de variable (m, mod, id...)
                 const codeID = data.m || data.mod || data.id || "";
                 const isFinished = (data.f === true || data.finished === true);
 
-                // Recherche correspondance
                 for (const [pKey, pData] of Object.entries(CONFIG.pillars)) {
                     pData.modules.forEach((mod, idx) => {
                         // Match Strict
@@ -358,9 +366,7 @@
 
                 if (foundPillar) {
                     if (isFinished) {
-                        // C'est ICI qu'il faut la fonction saveProgress !
                         saveProgress(foundPillar, foundLevel, data);
-                        
                         feedback.style.color = "#00ff88";
                         feedback.innerText = "✅ VALIDÉ ! Chargement...";
                         setTimeout(() => location.reload(), 1000);
@@ -377,20 +383,16 @@
         }
 
         // ============================================================
-        // 5. FONCTION DE SAUVEGARDE (Celle qui manquait !)
+        // 5. FONCTION DE SAUVEGARDE
         // ============================================================
         function saveProgress(pillarKey, level, fullData) {
             const current = parseInt(localStorage.getItem(`PROG_${pillarKey}`) || "0");
             
-            // On ne met à jour que si on progresse
             if (level > current) {
                 localStorage.setItem(`PROG_${pillarKey}`, level);
             }
             
-            // On sauvegarde le certificat
             localStorage.setItem(`CERT_${pillarKey}_${level}`, JSON.stringify(fullData));
-            
-            // On rafraîchit l'affichage
             renderMatrix();
         }
 
@@ -430,7 +432,6 @@
 
             modules.forEach((mod, index) => {
                 const levelTarget = index + 1; 
-                // Pour entrer au niveau 2, on forge le code du niveau 1
                 if (levelTarget > 1) {
                     const opt = document.createElement('option');
                     opt.value = index; 
@@ -456,12 +457,12 @@
             const payload = {
                 v: 1,
                 d: new Date().toISOString(),
-                m: previousModule.id, // ID du module précédent
+                m: previousModule.id,
                 mv: "FORGE",
                 n: name,
                 c: classe,
                 l: 4, s: 100, x: 999, q: 10, dj: 100,
-                f: true // Sésame
+                f: true
             };
 
             try {
