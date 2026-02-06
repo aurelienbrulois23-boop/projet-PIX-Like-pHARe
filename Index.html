@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXHARe - Hub de Formation & Médiation v3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&family=Courier+New:wght@700&family=Orbitron:wght@700&display=swap');
+
+        :root { 
+            --neon: #00d4ff; 
+            --neon-red: #ff0044;
+            --neon-green: #00ff88;
+            --neon-gold: #ffd700;
+            --dark: #0a0a12; 
+            --panel: #16213e; 
+            --locked: #2a2a35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--dark); 
+            color: #fff; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+        }
+        
+        h1 { 
+            font-family: 'Orbitron', sans-serif; 
+            text-transform: uppercase; 
+            letter-spacing: 5px; 
+            color: var(--neon); 
+            margin-bottom: 5px; 
+            font-weight: 800; 
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); 
+        }
+        h1 span { color: #fff; }
+        .subtitle { 
+            color: #888; 
+            margin-bottom: 40px; 
+            font-style: italic; 
+            font-size: 0.9em; 
+        }
+
+        /* === NOTICE D'ACCUEIL === */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.95);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        #welcome-overlay.hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .welcome-box {
+            background: var(--panel);
+            border: 2px solid var(--neon);
+            border-radius: 15px;
+            max-width: 600px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
+            position: relative;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .welcome-box h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .welcome-box p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .welcome-box ul {
+            text-align: left;
+            color: #aaa;
+            margin: 15px 0 20px 20px;
+            line-height: 1.8;
+        }
+
+        .welcome-box ul li {
+            margin-bottom: 8px;
+        }
+
+        .welcome-box strong {
+            color: var(--neon-green);
+        }
+
+        .btn-welcome-close {
+            background: var(--neon);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-welcome-close:hover {
+            background: #fff;
+            box-shadow: 0 0 20px var(--neon);
+        }
+
+        /* Bouton réouverture notice (coin haut gauche) */
+        #btn-reopen-notice {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: rgba(22, 33, 62, 0.8);
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 8px 15px;
+            font-size: 0.75em;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 9999;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        #btn-reopen-notice:hover {
+            opacity: 1;
+            background: var(--neon);
+            color: #000;
+        }
+
+        /* === AGORA AI WIDGET === */
+        #agora-widget { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 10000; 
+            font-family: 'Segoe UI', sans-serif; 
+        }
+        
+        #agora-toggle { 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            background: var(--neon); 
+            border: none; 
+            cursor: pointer; 
+            box-shadow: 0 0 30px var(--neon); 
+            font-size: 35px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulse-agora 3s infinite;
+        }
+
+        @keyframes pulse-agora {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px var(--neon); }
+        }
+
+        #agora-toggle:hover { 
+            transform: scale(1.15) rotate(10deg); 
+            animation: none;
+        }
+        
+        #agora-chat { 
+            display: none; 
+            width: 420px; 
+            height: 650px; 
+            background: var(--panel); 
+            border: 2px solid var(--neon); 
+            border-radius: 15px; 
+            flex-direction: column; 
+            position: absolute; 
+            bottom: 90px; 
+            right: 0; 
+            box-shadow: 0 0 60px rgba(0, 212, 255, 0.4); 
+            overflow: hidden; 
+            animation: agoraSlideIn 0.3s ease-out;
+        }
+
+        @keyframes agoraSlideIn { 
+            from { transform: translateY(30px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
+
+        #agora-header { 
+            background: var(--neon); 
+            color: var(--dark); 
+            padding: 15px; 
+            font-weight: bold; 
+            font-family: 'Orbitron'; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        #agora-status { 
+            font-size: 0.65rem; 
+            text-transform: uppercase; 
+            color: #fff; 
+            background: rgba(0,0,0,0.4); 
+            padding: 3px 8px; 
+            border-radius: 10px; 
+        }
+
+        #agora-status.online { background: var(--neon-green); color: #000; }
+        #agora-status.offline { background: var(--neon-red); }
+        #agora-status.loading { background: #ffa500; color: #000; }
+
+        #agora-msgs { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            background: rgba(10, 10, 18, 0.6); 
+        }
+
+        .agora-msg { 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            max-width: 85%; 
+            line-height: 1.5; 
+            font-size: 0.95rem; 
+            word-wrap: break-word;
+        }
+
+        .agora-bot { 
+            background: #1a2a4a; 
+            color: var(--neon); 
+            align-self: flex-start; 
+            border: 1px solid var(--neon); 
+            border-bottom-left-radius: 2px; 
+        }
+
+        .agora-user { 
+            background: #2d3436; 
+            color: #fff; 
+            align-self: flex-end; 
+            border-bottom-right-radius: 2px; 
+        }
+
+        .agora-error {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            align-self: center;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        #agora-input-box { 
+            display: flex; 
+            padding: 15px; 
+            background: #0a0a12; 
+            border-top: 1px solid #333; 
+        }
+
+        #agora-input { 
+            flex: 1; 
+            background: transparent; 
+            border: none; 
+            color: #fff; 
+            outline: none; 
+            padding: 5px; 
+            font-size: 1rem; 
+        }
+
+        #agora-send-btn {
+            background: none;
+            border: none;
+            color: var(--neon);
+            cursor: pointer;
+            font-size: 1.4rem;
+            padding: 0 10px;
+            transition: 0.2s;
+        }
+
+        #agora-send-btn:hover {
+            transform: scale(1.2);
+            color: #fff;
+        }
+
+        #agora-send-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Scrollbar personnalisée */
+        #agora-msgs::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #agora-msgs::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+
+        #agora-msgs::-webkit-scrollbar-thumb {
+            background: var(--neon);
+            border-radius: 10px;
+        }
+
+        /* === INTERFACE HUB === */
+        .arcade-btn {
+            display: none; 
+            margin: 0 auto 30px auto;
+            background: transparent; 
+            border: 2px solid var(--neon-gold); 
+            color: var(--neon-gold);
+            padding: 10px 30px; 
+            font-family: 'Courier New', monospace; 
+            font-weight: bold;
+            cursor: pointer; 
+            text-decoration: none; 
+            width: fit-content;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            transition: all 0.3s;
+            animation: pulse-gold 2s infinite;
+        }
+
+        .arcade-btn:hover { 
+            background: var(--neon-gold); 
+            color: #000; 
+            box-shadow: 0 0 25px var(--neon-gold); 
+        }
+
+        @keyframes pulse-gold { 
+            0% { opacity: 1; } 
+            50% { opacity: 0.7; } 
+            100% { opacity: 1; } 
+        }
+
+        .decoder-zone {
+            background: #000; 
+            border: 1px solid var(--neon); 
+            padding: 25px;
+            max-width: 600px; 
+            margin: 0 auto 50px auto; 
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1); 
+            position: relative;
+        }
+
+        .decoder-zone::before { 
+            content: "MODULE DE VALIDATION"; 
+            position: absolute; 
+            top: -10px; 
+            left: 20px; 
+            background: var(--dark); 
+            padding: 0 10px; 
+            color: var(--neon); 
+            font-size: 0.8em; 
+            font-weight: bold; 
+        }
+        
+        input[type="text"] {
+            width: 70%; 
+            padding: 12px; 
+            background: #1a1a1a; 
+            border: 1px solid #444; 
+            color: #fff; 
+            font-family: 'Courier New', monospace; 
+            font-size: 1.1em; 
+            text-align: center; 
+            outline: none;
+        }
+
+        input[type="text"]:focus { 
+            border-color: var(--neon); 
+        }
+        
+        button.action-btn {
+            padding: 12px 25px; 
+            background: var(--neon); 
+            color: #000; 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+        }
+
+        button.action-btn:hover { 
+            background: #fff; 
+            box-shadow: 0 0 15px var(--neon); 
+        }
+
+        .matrix-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 30px; 
+            padding-bottom: 120px;
+        }
+        
+        .pillar-column {
+            background: rgba(22, 33, 62, 0.5); 
+            border-radius: 12px; 
+            padding: 15px;
+            width: 300px; 
+            border-top: 4px solid #555; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px;
+        }
+
+        .pillar-title { 
+            font-size: 1.3em; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        .module-card {
+            background: var(--locked); 
+            padding: 15px; 
+            border-radius: 6px;
+            border-left: 4px solid #444; 
+            text-align: left; 
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .module-card.locked { 
+            opacity: 0.6; 
+            pointer-events: none; 
+            filter: grayscale(1); 
+        }
+
+        .module-card.open { 
+            background: var(--panel); 
+            border-left-color: var(--neon); 
+            cursor: default; 
+        }
+
+        .module-card.done { 
+            background: #0f2e20; 
+            border-left-color: var(--neon-green); 
+        }
+
+        .module-card h4 { 
+            margin: 0 0 5px 0; 
+            font-size: 1.1em; 
+        }
+
+        .status-txt { 
+            font-size: 0.7em; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            float: right; 
+            margin-top: 3px; 
+        }
+        
+        .btn-launch { 
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 10px; 
+            background: transparent; 
+            border: 1px solid var(--neon); 
+            color: var(--neon);
+            text-decoration: none; 
+            text-align: center; 
+            font-size: 0.9em; 
+            font-weight: bold;
+            transition: 0.3s; 
+            box-sizing: border-box;
+        }
+
+        .btn-launch:hover { 
+            background: var(--neon); 
+            color: #000; 
+        }
+
+        .btn-diploma {
+            display: block; 
+            width: 100%; 
+            padding: 8px; 
+            margin-top: 5px;
+            background: #d4af37; 
+            color: #000; 
+            border: none; 
+            cursor: pointer;
+            font-size: 0.8em; 
+            font-weight: bold;
+        }
+
+        /* === FORGE ADMIN === */
+        .forge-toggle { 
+            position: fixed; 
+            bottom: 10px; 
+            right: 10px; 
+            opacity: 0.3; 
+            cursor: pointer; 
+            font-size: 2em; 
+        }
+
+        .forge-toggle:hover { 
+            opacity: 1; 
+        }
+
+        .forge-container {
+            display: none; 
+            background: #111; 
+            border: 2px dashed var(--neon-red); 
+            margin: 40px auto; 
+            max-width: 800px; 
+            padding: 25px;
+            border-radius: 10px; 
+            text-align: left; 
+            position: relative;
+            box-shadow: 0 0 50px rgba(255, 0, 68, 0.2);
+        }
+
+        .forge-container::before {
+            content: "/// MODE ADMINISTRATEUR : GÉNÉRATEUR DE SÉSAMES ///";
+            position: absolute; 
+            top: -12px; 
+            left: 20px; 
+            background: #111; 
+            color: var(--neon-red); 
+            font-weight: bold; 
+            padding: 0 10px;
+        }
+        
+        .forge-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 15px; 
+        }
+
+        .forge-full { 
+            grid-column: 1 / -1; 
+        }
+        
+        .forge-label { 
+            color: #888; 
+            font-size: 0.8em; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .forge-input { 
+            width: 100%; 
+            background: #000; 
+            color: #fff; 
+            border: 1px solid #555; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            font-family: monospace;
+        }
+        
+        .forge-btn {
+            background: var(--neon-red); 
+            color: #fff; 
+            border: none; 
+            padding: 15px;
+            width: 100%; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase;
+        }
+
+        .forge-btn:hover { 
+            background: #fff; 
+            color: #000; 
+        }
+
+        .reset-btn {
+            background: transparent; 
+            border: 1px solid #555; 
+            color: #555; 
+            padding: 10px; 
+            margin-top: 20px; 
+            width: 100%; 
+            cursor: pointer; 
+            font-size: 0.8em;
+        }
+
+        .reset-btn:hover { 
+            border-color: red; 
+            color: red; 
+        }
+
+        .forge-output {
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #000; 
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green); 
+            font-family: 'Courier New', monospace; 
+            word-break: break-all;
+            cursor: pointer; 
+            position: relative; 
+            display: none;
+        }
+
+        .forge-output:hover::after {
+            content: "COPIER LE CODE"; 
+            position: absolute; 
+            top: 0; 
+            right: 0;
+            background: var(--neon-green); 
+            color: #000; 
+            padding: 5px 10px; 
+            font-size: 0.7em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #agora-chat {
+                width: calc(100vw - 40px);
+                height: 500px;
+                right: -10px;
+            }
+
+            .pillar-column {
+                width: 100%;
+            }
+
+            .welcome-box {
+                margin: 20px;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NOTICE D'ACCUEIL -->
+    <div id="welcome-overlay">
+        <div class="welcome-box">
+            <h2>🏛️ Bienvenue sur PIXHARe Hub v3</h2>
+            <p>
+                <strong>PIXHARe</strong> est votre plateforme de formation interactive sur le harcèlement scolaire, 
+                la médiation et le vivre-ensemble.
+            </p>
+            <p><strong>Comment ça fonctionne ?</strong></p>
+            <ul>
+                <li>📚 <strong>5 Piliers thématiques</strong> : Juridique, Numérique, Groupe, Historique, Neuro & Empathie</li>
+                <li>🎯 <strong>Progression par niveaux</strong> : Chaque pilier contient 5 modules progressifs</li>
+                <li>🔓 <strong>Système de validation</strong> : Complétez un module, obtenez un code, validez-le ici</li>
+                <li>🏛️ <strong>AGORA v3</strong> : Votre assistant IA de médiation (bouton cyan en bas à droite)</li>
+                <li>🎮 <strong>Zone Arcade</strong> : Bonus débloqué selon votre progression</li>
+            </ul>
+            <p>
+                <strong>Conseil :</strong> Commencez par le <strong>Niveau 1</strong> de chaque pilier. 
+                Discutez avec <strong>AGORA</strong> si vous avez des questions !
+            </p>
+            <button class="btn-welcome-close" onclick="closeWelcome()">COMMENCER L'AVENTURE</button>
+        </div>
+    </div>
+
+    <!-- Bouton réouverture notice -->
+    <button id="btn-reopen-notice" onclick="showWelcome()">ℹ️ NOTICE</button>
+
+    <!-- HEADER -->
+    <h1>PIXHARe <span>///</span> HUB 2026</h1>
+    <p class="subtitle">Formation pHARe & Médiation Augmentée par IA</p>
+
+    <!-- AGORA AI WIDGET -->
+    <div id="agora-widget">
+        <div id="agora-chat">
+            <div id="agora-header">
+                <span>🏛️ AGORA v3</span>
+                <span id="agora-status" class="loading">INIT...</span>
+            </div>
+            <div id="agora-msgs">
+                <div class="agora-msg agora-bot">
+                    Salut l'architecte ! Je suis AGORA, ton médiateur IA. 
+                    J'ai chargé tout mon savoir sur le harcèlement et la médiation. 
+                    Pose-moi tes questions, je te guide sans langue de bois. 💪
+                </div>
+            </div>
+            <div id="agora-input-box">
+                <input type="text" id="agora-input" placeholder="Pose ta question..." onkeypress="if(event.key==='Enter') sendToAgora()">
+                <button id="agora-send-btn" onclick="sendToAgora()">➤</button>
+            </div>
+        </div>
+        <button id="agora-toggle" onclick="toggleAgora()">🏛️</button>
+    </div>
+
+    <!-- BOUTON ARCADE -->
+    <a href="#" id="arcadeLink" class="arcade-btn" onclick="launchArcade(); return false;">
+        👾 ZONE ARCADE (Lvl.<span id="arcadeLvl">0</span>)
+    </a>
+
+    <!-- MODULE DE VALIDATION -->
+    <div class="decoder-zone">
+        <input type="text" id="inputToken" placeholder="Entre ton code de réussite ici..." autocomplete="off">
+        <button class="action-btn" onclick="processInput()">VALIDER</button>
+        <div id="feedback" style="height:20px; margin-top:10px; font-weight:bold; font-size: 0.9em; color: var(--neon-green);"></div>
+    </div>
+
+    <!-- MATRICE DES MODULES -->
+    <div class="matrix-container" id="matrixRoot"></div>
+
+    <!-- MODE FORGE (ADMIN) -->
+    <div class="forge-toggle" onclick="toggleForge()">⚙️</div>
+    <div class="forge-container" id="forgePanel">
+        <div class="forge-grid">
+            <div>
+                <label class="forge-label">PILIER</label>
+                <select id="forgePillar" class="forge-input" onchange="updateForgeLevels()"></select>
+            </div>
+            <div>
+                <label class="forge-label">NIVEAU À DÉBLOQUER</label>
+                <select id="forgeLevel" class="forge-input"></select>
+            </div>
+            <div>
+                <label class="forge-label">NOM ÉLÈVE</label>
+                <input type="text" id="forgeName" class="forge-input" placeholder="Jean Dupont">
+            </div>
+            <div>
+                <label class="forge-label">CLASSE</label>
+                <input type="text" id="forgeClass" class="forge-input" placeholder="4ème A">
+            </div>
+        </div>
+        <button class="forge-btn forge-full" onclick="forgeToken()">GÉNÉRER SÉSAME</button>
+        <div class="forge-output" id="forgeResult" onclick="copyToClipboard(this.innerText)"></div>
+        <button class="reset-btn" onclick="hardReset()">⚠️ RESET TOTAL PROGRESSION</button>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION GLOBALE
+        // ============================================
+        const CONFIG = {
+            pillars: {
+                "JUR": {
+                    title: "PILIER JURIDIQUE & CITOYEN",
+                    color: "#e63946",
+                    modules: [
+                        { id: "JURIDIQUE_01", file: "PIX_pHARe_Module_JURIDIQUE_01.html", name: "Les Droits Fondamentaux" },
+                        { id: "JURIDIQUE_02", file: "PIX_pHARe_Module_JURIDIQUE_02.html", name: "Le Cadre Légal" },
+                        { id: "JURIDIQUE_03", file: "PIX_pHARe_Module_JURIDIQUE_03.html", name: "Responsabilités & Sanctions" },
+                        { id: "JURIDIQUE_04", file: "PIX_pHARe_Module_JURIDIQUE_04.html", name: "Recours & Protection" },
+                        { id: "JURIDIQUE_05", file: "PIX_pHARe_Module_JURIDIQUE_05.html", name: "Citoyen Éclairé [CERTIF]" }
+                    ]
+                },
+                "NUM": {
+                    title: "PILIER NUMÉRIQUE & CYBER",
+                    color: "#457b9d",
+                    modules: [
+                        { id: "NUMERIQUE_01", file: "PIX_pHARe_Module_NUMERIQUE_01.html", name: "Traces Numériques" },
+                        { id: "NUMERIQUE_02", file: "PIX_pHARe_Module_NUMERIQUE_02.html", name: "Cyberharcèlement" },
+                        { id: "NUMERIQUE_03", file: "PIX_pHARe_Module_NUMERIQUE_03.html", name: "Désinformation & Manipulations" },
+                        { id: "NUMERIQUE_04", file: "PIX_pHARe_Module_NUMERIQUE_04.html", name: "Protection & Signalement" },
+                        { id: "NUMERIQUE_05", file: "PIX_pHARe_Module_NUMERIQUE_05.html", name: "Citoyen Numérique [CERTIF]" }
+                    ]
+                },
+                "GRP": {
+                    title: "PILIER GROUPE & DYNAMIQUES",
+                    color: "#a8dadc",
+                    modules: [
+                        { id: "GROUPE_01", file: "PIX_pHARe_Module_GROUPE_01.html", name: "Le Triangle Infernal" },
+                        { id: "GROUPE_02", file: "PIX_pHARe_Module_GROUPE_02.html", name: "Effets de Groupe" },
+                        { id: "GROUPE_03", file: "PIX_pHARe_Module_GROUPE_03.html", name: "Les Pièges de l'Esprit" },
+                        { id: "GROUPE_04", file: "PIX_pHARe_Module_GROUPE_04.html", name: "Briser le Cycle" },
+                        { id: "GROUPE_05", file: "PIX_pHARe_Module_GROUPE_05.html", name: "Leader Positif [CERTIF]" }
+                    ]
+                },
+                "HIS": {
+                    title: "PILIER HISTORIQUE & SOCIÉTAL",
+                    color: "#b08968",
+                    modules: [
+                        { id: "HISTOIRE_01", file: "PIX_pHARe_Module_HISTOIRE_01.html", name: "Avant le mot : quand la violence ne se voyait pas" },
+                        { id: "HISTOIRE_02", file: "PIX_pHARe_Module_HISTOIRE_02.html", name: "Rites, bizutages et violences normalisées" },
+                        { id: "HISTOIRE_03", file: "PIX_pHARe_Module_HISTOIRE_03.html", name: "Nommer pour comprendre : naissance d'un concept" },
+                        { id: "HISTOIRE_04", file: "PIX_pHARe_Module_HISTOIRE_04.html", name: "De la tolérance à la loi : quand la société réagit" },
+                        { id: "HISTOIRE_05", file: "PIX_pHARe_Module_HISTOIRE_05.html", name: "Mémoire, luttes et vigilance collective" }
+                    ]
+                },
+                "NEU": {
+                    title: "PILIER NEURO & EMPATHIE",
+                    color: "#6b8e23",
+                    modules: [
+                        { id: "NEURO_01", file: "PIX_pHARe_Module_NEURO_01.html", name: "Comprendre l'autre" },
+                        { id: "NEURO_02", file: "PIX_pHARe_Module_NEURO_02.html", name: "Le cerveau ado en chantier" },
+                        { id: "NEURO_03", file: "PIX_pHARe_Module_NEURO_03.html", name: "Mettre des mots sur ses émotions" },
+                        { id: "NEURO_04", file: "PIX_pHARe_Module_NEURO_04.html", name: "La douleur sociale" },
+                        { id: "NEURO_05", file: "PIX_pHARe_Module_NEURO_05.html", name: "S'auto-réguler [CERTIF]" }
+                    ]
+                }
+            },
+            adminKey: "AGORA-ADMIN"
+        };
+
+        // ============================================
+        // NOTICE D'ACCUEIL
+        // ============================================
+        function closeWelcome() {
+            document.getElementById('welcome-overlay').classList.add('hidden');
+            localStorage.setItem('PIXHARE_WELCOME_SEEN', 'true');
+        }
+
+        function showWelcome() {
+            document.getElementById('welcome-overlay').classList.remove('hidden');
+        }
+
+        // Afficher la notice au premier lancement
+        if (!localStorage.getItem('PIXHARE_WELCOME_SEEN')) {
+            // La notice est visible par défaut
+        } else {
+            closeWelcome();
+        }
+
+        // ============================================
+        // RENDU DE LA MATRICE
+        // ============================================
+        function renderMatrix() {
+            const root = document.getElementById('matrixRoot');
+            root.innerHTML = "";
+            
+            for (const [pillarKey, data] of Object.entries(CONFIG.pillars)) {
+                const col = document.createElement('div');
+                col.className = 'pillar-column';
+                col.style.borderTopColor = data.color;
+                col.innerHTML = `<div class="pillar-title" style="color:${data.color}">${data.title}</div>`;
+                
+                const savedLevel = parseInt(localStorage.getItem(`PROG_${pillarKey}`) || "0");
+                
+                data.modules.forEach((mod, index) => {
+                    const levelNum = index + 1;
+                    const isDone = savedLevel >= levelNum;
+                    const isOpen = (levelNum === 1) || (savedLevel >= levelNum - 1);
+                    
+                    let statusClass = isDone ? "done" : (isOpen ? "open" : "locked");
+                    let statusText = isDone ? "✅ VALIDÉ" : (isOpen ? "🟢 DISPONIBLE" : "🔒 VERROUILLÉ");
+                    
+                    col.innerHTML += `
+                        <div class="module-card ${statusClass}">
+                            <span class="status-txt" style="color:${isDone ? '#00ff88' : (isOpen ? '#fff' : '#555')}">${statusText}</span>
+                            <h4>NIVEAU ${levelNum}</h4>
+                            <div style="font-size:0.9em; margin-bottom:5px; color:#aaa">${mod.name}</div>
+                            ${isOpen ? `<a href="${mod.file}" target="_blank" class="btn-launch">LANCER MISSION</a>` : ''}
+                            ${isDone ? `<button onclick="downloadDiploma('${pillarKey}', ${levelNum})" class="btn-diploma">📜 CERTIFICAT</button>` : ''}
+                        </div>`;
+                });
+                
+                root.appendChild(col);
+            }
+            
+            updateArcadeButton();
+        }
+
+        // ============================================
+        // SYSTÈME DE VALIDATION
+        // ============================================
+        function processInput() {
+            let input = document.getElementById('inputToken').value.trim();
+            const feedback = document.getElementById('feedback');
+            
+            // Mode admin
+            if (input === CONFIG.adminKey) { 
+                toggleForge(); 
+                return; 
+            }
+            
+            // Décodage du token
+            let data = null;
+            try { 
+                data = JSON.parse(decodeURIComponent(escape(atob(input)))); 
+            } catch (e) { 
+                try { 
+                    data = JSON.parse(atob(input)); 
+                } catch (e2) { 
+                    alert("❌ Code illisible ou corrompu."); 
+                    return; 
+                } 
+            }
+            
+            // Recherche du module
+            let foundPillar = null, foundLevel = 0;
+            const codeID = data.m || data.mod || data.id || "";
+            
+            for (const [pKey, pData] of Object.entries(CONFIG.pillars)) {
+                pData.modules.forEach((mod, idx) => {
+                    if (mod.id === codeID) { 
+                        foundPillar = pKey; 
+                        foundLevel = idx + 1; 
+                    }
+                });
+            }
+            
+            // Validation
+            if (foundPillar && (data.f === true || data.finished === true)) {
+                saveProgress(foundPillar, foundLevel, data);
+                feedback.innerText = "✅ MODULE VALIDÉ AVEC SUCCÈS !";
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                alert("❌ Code non reconnu ou module non terminé.");
+            }
+        }
+
+        function saveProgress(pk, lv, d) {
+            const cur = parseInt(localStorage.getItem(`PROG_${pk}`) || "0");
+            if (lv > cur) localStorage.setItem(`PROG_${pk}`, lv);
+            localStorage.setItem(`CERT_${pk}_${lv}`, JSON.stringify(d));
+            renderMatrix();
+        }
+
+        // ============================================
+        // ARCADE
+        // ============================================
+        function updateArcadeButton() {
+            let total = 0;
+            for (const key of Object.keys(CONFIG.pillars)) {
+                total += parseInt(localStorage.getItem(`PROG_${key}`) || "0");
+            }
+            const btn = document.getElementById('arcadeLink');
+            if (total > 0) {
+                btn.style.display = 'block'; 
+                document.getElementById('arcadeLvl').innerText = total;
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        function launchArcade() {
+            let total = 0;
+            for (const key of Object.keys(CONFIG.pillars)) {
+                total += parseInt(localStorage.getItem(`PROG_${key}`) || "0");
+            }
+            window.open(`BONUS_ARCADE.html?power=${total}`, '_blank');
+        }
+
+        // ============================================
+        // CERTIFICAT
+        // ============================================
+        function downloadDiploma(pk, lv) {
+            const d = JSON.parse(localStorage.getItem(`CERT_${pk}_${lv}`));
+            const n = CONFIG.pillars[pk].modules[lv-1].name;
+            const content = `
+═══════════════════════════════════════════════════════
+           PIXHARe - ATTESTATION DE RÉUSSITE
+═══════════════════════════════════════════════════════
+
+Élève      : ${d.n || 'ANONYME'}
+Classe     : ${d.c || 'NC'}
+Pilier     : ${CONFIG.pillars[pk].title}
+Module     : NIVEAU ${lv} - ${n}
+Date       : ${new Date(d.d).toLocaleDateString('fr-FR')}
+
+Code de sécurité : ${btoa(d.m + d.n)}
+
+═══════════════════════════════════════════════════════
+        Félicitations pour ta réussite ! 🎓
+═══════════════════════════════════════════════════════
+            `;
+            const blob = new Blob([content], {type: 'text/plain'});
+            const a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob); 
+            a.download = `PIXHARe_Certificat_${d.n}_${pk}_Niveau${lv}.txt`; 
+            a.click();
+        }
+
+        // ============================================
+        // MODE FORGE (ADMIN)
+        // ============================================
+        function toggleForge() { 
+            const f = document.getElementById('forgePanel'); 
+            f.style.display = (f.style.display === 'block' ? 'none' : 'block'); 
+            if(f.style.display === 'block') initForge(); 
+        }
+
+        function initForge() { 
+            const ps = document.getElementById('forgePillar'); 
+            ps.innerHTML = ""; 
+            Object.entries(CONFIG.pillars).forEach(([k,v]) => {
+                ps.innerHTML += `<option value="${k}">${v.title}</option>`
+            }); 
+            updateForgeLevels(); 
+        }
+
+        function updateForgeLevels() { 
+            const pk = document.getElementById('forgePillar').value; 
+            const ls = document.getElementById('forgeLevel'); 
+            ls.innerHTML = ""; 
+            CONFIG.pillars[pk].modules.forEach((m,i) => { 
+                ls.innerHTML += `<option value="${i+1}">Niveau ${i+1} - ${m.name}</option>`; 
+            }); 
+        }
+
+        function forgeToken() {
+            const pk = document.getElementById('forgePillar').value;
+            const lv = parseInt(document.getElementById('forgeLevel').value);
+            const mod = CONFIG.pillars[pk].modules[lv-1];
+            
+            const payload = { 
+                v: 1, 
+                d: new Date().toISOString(), 
+                m: mod.id, 
+                n: document.getElementById('forgeName').value || "ADMIN", 
+                c: document.getElementById('forgeClass').value || "STAFF", 
+                f: true 
+            };
+            
+            const token = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+            const output = document.getElementById('forgeResult'); 
+            output.style.display = 'block'; 
+            output.innerText = token;
+        }
+
+        function copyToClipboard(text) { 
+            navigator.clipboard.writeText(text).then(() => {
+                alert("✅ Code copié dans le presse-papier !")
+            }); 
+        }
+
+        function hardReset() { 
+            if(confirm("⚠️ ATTENTION : Cela effacera TOUTE la progression. Continuer ?")) { 
+                localStorage.clear(); 
+                location.reload(); 
+            } 
+        }
+
+        // ============================================
+        // AGORA v3 - IA DE MÉDIATION
+        // ============================================
+        
+        // Configuration Hugging Face
+        const HF_MODEL = "Qwen/Qwen2.5-7B-Instruct";
+        const HF_API_URL = `https://api-inference.huggingface.co/models/${HF_MODEL}`;
+        
+        // 🚨 CONFIGURATION : Remplace par ton URL GitHub
+        // URL de l'index qui liste tous les fichiers à charger
+        const AGORA_INDEX_URL = "https://raw.githubusercontent.com/TON_USER/TON_REPO/main/AGORA_INDEX.json";
+        
+        // Alternative : URL directe d'un fichier JSON unique (ancienne méthode)
+        // const AGORA_DNA_URL = "https://raw.githubusercontent.com/TON_USER/TON_REPO/main/AETHONYX_PHARE_MASTER.json";
+        
+        let AGORA_DNA = "";
+        let isAgoraReady = false;
+
+        // Chargement du contexte AGORA au démarrage
+        async function bootstrapAgora() {
+            const status = document.getElementById('agora-status');
+            
+            // Vérification configuration
+            if (AGORA_INDEX_URL.includes("TON_USER")) {
+                status.innerText = "NO-CONFIG";
+                status.classList.remove('loading');
+                status.classList.add('offline');
+                console.warn("⚠️ AGORA INDEX URL non configurée. Modifie AGORA_INDEX_URL dans le code.");
+                return;
+            }
+            
+            try {
+                status.innerText = "CHARGEMENT...";
+                
+                // Charger l'index des sources
+                const indexRes = await fetch(AGORA_INDEX_URL);
+                if (!indexRes.ok) throw new Error(`Impossible de charger l'index (HTTP ${indexRes.status})`);
+                
+                const index = await indexRes.json();
+                console.log(`📚 Index AGORA v${index.version} chargé : ${index.sources.length} sources`);
+                
+                // Trier par priorité (1 = essentiel d'abord)
+                const sourcesSorted = [...index.sources].sort((a, b) => a.priorite - b.priorite);
+                
+                let totalContent = "";
+                let loadedCount = 0;
+                
+                // Charger chaque source
+                for (const source of sourcesSorted) {
+                    try {
+                        const sourceRes = await fetch(source.url);
+                        if (!sourceRes.ok) {
+                            console.warn(`⚠️ Source "${source.nom}" non accessible (${source.url})`);
+                            continue;
+                        }
+                        
+                        let content = await sourceRes.text();
+                        
+                        // Si c'est du JSON, le formater
+                        if (source.type === 'json') {
+                            try {
+                                const jsonData = JSON.parse(content);
+                                content = JSON.stringify(jsonData, null, 2);
+                            } catch (e) {
+                                console.warn(`⚠️ JSON invalide pour "${source.nom}"`);
+                            }
+                        }
+                        
+                        // Ajouter avec en-tête pour que l'IA sache d'où vient l'info
+                        totalContent += `\n\n=== ${source.nom.toUpperCase()} ===\n`;
+                        totalContent += `Type: ${source.type} | Priorité: ${source.priorite}\n`;
+                        totalContent += `Description: ${source.description}\n`;
+                        totalContent += `---\n${content}\n`;
+                        
+                        loadedCount++;
+                        console.log(`✅ Source chargée : ${source.nom} (${content.length} caractères)`);
+                        
+                        // Limite de sécurité pour éviter de surcharger le contexte
+                        if (totalContent.length > 80000) {
+                            console.warn("⚠️ Limite de contexte atteinte, arrêt du chargement");
+                            break;
+                        }
+                        
+                    } catch (err) {
+                        console.error(`❌ Erreur chargement "${source.nom}":`, err);
+                    }
+                }
+                
+                AGORA_DNA = totalContent.substring(0, 80000);
+                
+                status.innerText = "ONLINE";
+                status.classList.remove('loading');
+                status.classList.add('online');
+                isAgoraReady = true;
+                
+                console.log(`✅ AGORA DNA assemblé : ${loadedCount}/${index.sources.length} sources, ${AGORA_DNA.length} caractères`);
+                
+            } catch (e) {
+                status.innerText = "DNA-ERROR";
+                status.classList.remove('loading');
+                status.classList.add('offline');
+                console.error("❌ Erreur bootstrap AGORA:", e);
+                
+                // Message d'aide dans la console
+                console.info(`
+💡 AIDE AU DÉMARRAGE D'AGORA :
+1. Crée un fichier AGORA_INDEX.json sur ton repo GitHub
+2. Liste dedans tous les fichiers .md, .json, .py que tu veux qu'AGORA connaisse
+3. Copie l'URL raw de AGORA_INDEX.json
+4. Remplace AGORA_INDEX_URL dans ce fichier par ton URL
+5. Recharge la page
+                `);
+            }
+        }
+
+        function toggleAgora() { 
+            const c = document.getElementById('agora-chat'); 
+            c.style.display = (c.style.display === 'flex' ? 'none' : 'flex'); 
+        }
+
+        async function sendToAgora() {
+            const input = document.getElementById('agora-input');
+            const sendBtn = document.getElementById('agora-send-btn');
+            const userText = input.value.trim();
+            
+            if (!userText) return;
+            
+            // Vérification AGORA prêt
+            if (!isAgoraReady) {
+                addAgoraMessage("⚠️ AGORA n'est pas encore initialisé. Attends quelques secondes...", 'error');
+                return;
+            }
+            
+            // Ajout message utilisateur
+            addAgoraMessage(userText, 'user');
+            input.value = '';
+            sendBtn.disabled = true;
+
+            // Construction du contexte complet
+            const studentProgress = getStudentProgressSummary();
+            
+            const systemPrompt = `Tu es AGORA v3, l'IA de médiation scolaire du programme PIXHARe.
+
+CONTEXTE COMPLET AGORA (ton ADN de médiateur) :
+${AGORA_DNA}
+
+MODULES DISPONIBLES DANS LE HUB :
+${JSON.stringify(CONFIG.pillars, null, 2)}
+
+PROGRESSION DE L'ÉLÈVE ACTUEL :
+${studentProgress}
+
+MISSION : 
+- Aide l'élève avec bienveillance mais sans langue de bois (ton Michel Audiard)
+- Guide-le dans sa progression PIXHARe
+- Réponds à ses questions sur le harcèlement, la médiation, les modules
+- Oriente-le vers les bonnes ressources
+- Sois direct, empathique, et pertinent
+
+IMPORTANT : Réponds en français, de manière concise (max 150 mots), et avec ton caractère unique.`;
+
+            try {
+                // Appel à Hugging Face Inference API
+                const response = await fetch(HF_API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        inputs: `<|im_start|>system\n${systemPrompt}<|im_end|>\n<|im_start|>user\n${userText}<|im_end|>\n<|im_start|>assistant\n`,
+                        parameters: {
+                            max_new_tokens: 400,
+                            temperature: 0.7,
+                            top_p: 0.9,
+                            return_full_text: false,
+                            do_sample: true
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Gestion des erreurs HF
+                if (data.error) {
+                    if (data.error.includes("loading")) {
+                        addAgoraMessage("⏳ AGORA se réveille (modèle en chargement). Réessaye dans 20 secondes...", 'error');
+                    } else if (data.error.includes("overloaded")) {
+                        addAgoraMessage("⚠️ AGORA est surchargé (trop de monde). Réessaye dans 1 minute.", 'error');
+                    } else {
+                        addAgoraMessage(`⚠️ Erreur technique : ${data.error}`, 'error');
+                    }
+                    return;
+                }
+
+                // Extraction de la réponse
+                let reply = "";
+                if (Array.isArray(data) && data[0]?.generated_text) {
+                    reply = data[0].generated_text.trim();
+                } else if (data.generated_text) {
+                    reply = data.generated_text.trim();
+                } else {
+                    throw new Error("Format de réponse inattendu");
+                }
+
+                // Nettoyage de la réponse (enlever les balises si présentes)
+                reply = reply.replace(/<\|im_end\|>/g, '').trim();
+                
+                // Ajout du message bot
+                addAgoraMessage(reply, 'bot');
+                
+            } catch (err) {
+                console.error("Erreur AGORA:", err);
+                addAgoraMessage(`⚠️ Erreur de connexion : ${err.message}`, 'error');
+            } finally {
+                sendBtn.disabled = false;
+            }
+        }
+
+        function addAgoraMessage(text, type) {
+            const box = document.getElementById('agora-msgs');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `agora-msg agora-${type}`;
+            msgDiv.textContent = text;
+            box.appendChild(msgDiv);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function getStudentProgressSummary() {
+            const summary = [];
+            for (const [key, data] of Object.entries(CONFIG.pillars)) {
+                const level = parseInt(localStorage.getItem(`PROG_${key}`) || "0");
+                summary.push(`${data.title}: Niveau ${level}/5`);
+            }
+            return summary.join('\n');
+        }
+
+        // ============================================
+        // DÉMARRAGE
+        // ============================================
+        renderMatrix();
+        bootstrapAgora();
+    </script>
+</body>
+</html>
+<script>
+    // On remplace la fonction d'envoi pour viser Hugging Face
+    async function sendToAgora() {
+        const input = document.getElementById('agora-input');
+        const sendBtn = document.querySelector('#agora-input-box button');
+        const userText = input.value.trim();
+        
+        if (!userText || (sendBtn && sendBtn.disabled)) return;
+
+        // 1. Gestion de la clé Hugging Face (hf_...)
+        let hfToken = localStorage.getItem('AGORA_HF_TOKEN');
+        if (!hfToken) {
+            hfToken = prompt("🔑 Sécurité Agora : Entre ton Token Hugging Face (hf_...) pour activer l'IA :");
+            if (hfToken && hfToken.startsWith('hf_')) {
+                localStorage.setItem('AGORA_HF_TOKEN', hfToken.trim());
+            } else {
+                alert("Token invalide. Tu peux en créer un gratuitement sur Hugging Face.");
+                return;
+            }
+        }
+
+        // UI : Affichage immédiat du message utilisateur
+        if(sendBtn) sendBtn.disabled = true;
+        addAgoraMessage(userText, 'user');
+        input.value = '';
+
+        try {
+            const progress = getStudentProgressSummary();
+            const sysPrompt = `Tu es AGORA v3, médiateur scolaire expert piloté par AETHONYX. 
+Ton ton est direct, imagé, façon Michel Audiard (gouaille parisienne, protecteur, sérieux mais vif).
+Voici ta mémoire (DNA) : ${AGORA_DNA_MEMORY}
+Progression actuelle de l'élève : ${progress}
+Réponds brièvement et avec panache. Ne sors jamais de ton rôle.`;
+
+            // On utilise Qwen 2.5-72B (ou Qwen 3 si déployé sur HF)
+            // L'endpoint est le même pour la famille Qwen Instruct
+            const apiUrl = "https://api-inference.huggingface.co/models/Qwen/Qwen2.5-72B-Instruct";
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${hfToken}`
+                },
+                body: JSON.stringify({
+                    inputs: `<|im_start|>system\n${sysPrompt}<|im_end|>\n<|im_start|>user\n${userText}<|im_end|>\n<|im_start|>assistant\n`,
+                    parameters: {
+                        max_new_tokens: 500,
+                        temperature: 0.7,
+                        return_full_text: false
+                    }
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.error) throw new Error(data.error);
+
+            // Extraction de la réponse selon le format HF
+            let reply = "";
+            if (Array.isArray(data)) {
+                reply = data[0].generated_text;
+            } else if (data.generated_text) {
+                reply = data.generated_text;
+            } else {
+                throw new Error("Format de réponse inconnu");
+            }
+            
+            // Nettoyage des balises ChatML résiduelles
+            reply = reply.split('<|im_end|>')[0]
+                         .split('<|im_start|>')[0]
+                         .replace(/assistant\n/g, '')
+                         .trim();
+
+            addAgoraMessage(reply, 'bot');
+            
+        } catch (err) {
+            console.error("Erreur AGORA/Qwen:", err);
+            addAgoraMessage(`⚠️ Court-circuit : ${err.message}`, 'error');
+            
+            // Si erreur d'autorisation, on propose de reset le token
+            if(err.message.includes("401") || err.message.includes("Authorization")) {
+                if(confirm("Token expiré ou invalide. Voulez-vous le réinitialiser ?")) {
+                    localStorage.removeItem('AGORA_HF_TOKEN');
+                }
+            }
+        } finally {
+            if(sendBtn) sendBtn.disabled = false;
+            const box = document.getElementById('agora-msgs');
+            box.scrollTop = box.scrollHeight;
+        }
+    }
+
+    // On s'assure que le bouton "Notice" est bien là pour ton plan de diffusion
+    function toggleNotice() {
+        alert("📖 NOTICE PIXHARe\n\n1. VALIDE tes modules un par un.\n2. SAUVEGARDE tes codes de fin de module sur une clé USB ou par mail.\n3. EXTRAIS ton certificat final pour obtenir ta récompense.\n\nAgora AI est là pour t'aider dans le chat !");
+    }
+</script>
