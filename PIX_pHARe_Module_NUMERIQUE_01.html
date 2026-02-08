@@ -989,13 +989,10 @@
             const [showScenarioResult, setShowScenarioResult] = useState(false);
 
             // Start game
-            function startGame(name, className) {
-                setPlayerData(prev => ({
-                    ...prev,
-                    name: name,
-                    class: className
-                }));
-                setGameState("flashcards");
+            function startGame() {
+                if (playerData.name.trim() && playerData.class.trim()) {
+                    setGameState("flashcards");
+                }
             }
 
             // Flashcard navigation
@@ -1124,9 +1121,6 @@
 
             // Render functions
             function renderIntro() {
-                const [name, setName] = useState("");
-                const [className, setClassName] = useState("");
-
                 return e("div", { className: "app-container" },
                     e("div", { className: "header" },
                         e("h1", { className: "glitch-title" }, "PIX-pHARe"),
@@ -1148,8 +1142,8 @@
                                 e("label", { style: { display: "block", marginBottom: "8px", color: "var(--neon-cyan)", fontFamily: "'Share Tech Mono', monospace" } }, "TON PSEUDO :"),
                                 e("input", {
                                     type: "text",
-                                    value: name,
-                                    onChange: (ev) => setName(ev.target.value),
+                                    value: playerData.name,
+                                    onChange: (ev) => setPlayerData(prev => ({ ...prev, name: ev.target.value })),
                                     placeholder: "Entre ton prénom ou pseudo",
                                     style: {
                                         width: "100%",
@@ -1166,8 +1160,8 @@
                                 e("label", { style: { display: "block", marginBottom: "8px", color: "var(--neon-cyan)", fontFamily: "'Share Tech Mono', monospace" } }, "TA CLASSE :"),
                                 e("input", {
                                     type: "text",
-                                    value: className,
-                                    onChange: (ev) => setClassName(ev.target.value),
+                                    value: playerData.class,
+                                    onChange: (ev) => setPlayerData(prev => ({ ...prev, class: ev.target.value })),
                                     placeholder: "Ex: 4ème B",
                                     style: {
                                         width: "100%",
@@ -1183,8 +1177,8 @@
                             e("div", { style: { textAlign: "center", marginTop: "30px" } },
                                 e("button", {
                                     className: "action-btn",
-                                    onClick: () => startGame(name, className),
-                                    disabled: !name.trim() || !className.trim()
+                                    onClick: startGame,
+                                    disabled: !playerData.name.trim() || !playerData.class.trim()
                                 }, "[ INITIALISER ]")
                             )
                         )
