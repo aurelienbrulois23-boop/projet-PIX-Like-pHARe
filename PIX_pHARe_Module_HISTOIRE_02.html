@@ -3,1038 +3,1238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIX-pHARe | RITES ET BIZUTAGES</title>
+    <title>PIX-pHARe | Module HISTOIRE 02 - La Naissance Scientifique</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
+        
         :root {
-            --primary: #FFC400;   /* Ambre */
-            --accent: #9C7C38;    /* Sépia néon */
-            --success: #B08D57;   /* Bronze */
-            --warning: #FAF3E3;   /* Vieux Papier lumineux */
-            --dark: #2C2210;      /* Sépia foncé */
-            --darker: #B08D57;
-            --card: #F2E3C6;      /* Papier jauni */
-            --light: #FAF3E3;
-            --gold: #FFC400;
+            --history-bronze: #cd7f32;
+            --history-amber: #d4a574;
+            --history-sepia: #b08968;
+            --history-parchment: #e8d5b5;
+            --history-ink: #2c1810;
+            --void-dark: #0a0a0a;
+            --deep-dark: #050505;
+            --panel-bg: rgba(44, 24, 16, 0.95);
+            --text-primary: #f5ede4;
+            --text-secondary: #a89984;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, var(--light) 0%, var(--warning) 100%);
-            color: var(--dark);
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--void-dark);
+            color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            overflow-x: hidden;
         }
+        
+        .history-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(ellipse at 50% 20%, rgba(205, 127, 50, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 70%, rgba(176, 137, 104, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(212, 165, 116, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: historyGlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes historyGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.9; }
+        }
+        
+        .stars-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 20% 30%, rgba(205, 127, 50, 0.6), transparent),
+                radial-gradient(1px 1px at 60% 70%, rgba(212, 165, 116, 0.5), transparent),
+                radial-gradient(1px 1px at 80% 10%, rgba(176, 137, 104, 0.4), transparent);
+            background-size: 200px 200px;
+            animation: starsFloat 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes starsFloat {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+        
         .app-container {
-            width: 100%;
-            max-width: 900px;
-            background: var(--card);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(176, 141, 87, 0.20), 0 0 0 1px rgba(255,196,0,0.1);
-            padding: 40px;
             position: relative;
-            overflow: hidden;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .app-container::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--success), var(--accent));
+        
+        .header { text-align: center; padding: 40px 20px; }
+        
+        .pillar-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 20px rgba(205, 127, 50, 0.7));
+            animation: bookPulse 3s ease-in-out infinite;
         }
-        /* HEADER */
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 {
-            font-size: 2.2em;
-            color: var(--primary);
+        
+        @keyframes bookPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(205, 127, 50, 0.7)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 30px rgba(205, 127, 50, 0.9)); }
+        }
+        
+        .glitch-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--history-bronze), var(--history-amber), var(--history-sepia));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            animation: gradientShift 4s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--history-amber);
+            margin-top: 10px;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(255, 196, 0, 0.3);
         }
-        .header .subtitle {
-            color: var(--accent);
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-        .header .badge {
+        
+        .module-badge {
             display: inline-block;
-            background: var(--darker);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            margin-top: 10px;
-            border: 1px solid var(--primary);
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.3), rgba(212, 165, 116, 0.3));
+            border: 2px solid var(--history-bronze);
+            border-radius: 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--history-bronze);
+            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
         }
-        /* PROGRESS BAR */
-        .progress-container {
-            background: var(--darker);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-        }
-        .progress-bar-outer {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            height: 12px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        .progress-bar-inner {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--success));
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-        .progress-stats {
+        
+        .progress-bar {
             display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
         }
-        .xp-badge {
-            background: var(--gold);
-            color: #000;
-            padding: 3px 12px;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-        /* BUTTONS */
-        .btn {
-            background: linear-gradient(135deg, var(--primary), #b8903b);
-            color: var(--dark);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
+        
+        .progress-node {
+            width: 55px;
+            height: 55px;
+            border: 3px solid var(--text-secondary);
+            background: var(--deep-dark);
+            display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            transition: all 0.4s ease;
+        }
+        
+        .progress-node.active {
+            border-color: var(--history-bronze);
+            color: var(--history-bronze);
+            box-shadow: 0 0 25px rgba(205, 127, 50, 0.6);
+            animation: nodePulse 2s infinite;
+        }
+        
+        .progress-node.completed {
+            border-color: var(--history-amber);
+            background: rgba(212, 165, 116, 0.2);
+            color: var(--history-amber);
+        }
+        
+        @keyframes nodePulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(205, 127, 50, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(205, 127, 50, 0.9); }
+        }
+        
+        .xp-display {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .xp-box {
+            background: var(--panel-bg);
+            border: 1px solid var(--history-bronze);
+            padding: 12px 20px;
+            text-align: center;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+        }
+        
+        .xp-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 196, 0, 0.18);
+        
+        .xp-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--history-bronze);
+            margin-top: 5px;
         }
-        .btn:active { transform: translateY(0); }
-        .btn-secondary {
-            background: linear-gradient(135deg, #E1C699, #9C7C38);
+        
+        .content-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--history-bronze);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(205, 127, 50, 0.15);
         }
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #a1793b);
-        }
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning), #e7c072);
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, var(--accent), #6f5622);
-        }
-        .btn-block { width: 100%; justify-content: center; }
-        .btn-group {
+        
+        .panel-header {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        /* CARDS */
-        .card {
-            background: linear-gradient(145deg, #fffbe7, #faecd1);
-            color: var(--dark);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 20px 0;
-            box-shadow: 0 10px 30px rgba(176,141,87,0.10);
-        }
-        .card-dark {
-            background: var(--darker);
-            color: var(--light);
-        }
-        /* FLASHCARD */
-        .flashcard-container {
-            perspective: 1000px;
-            margin: 25px 0;
-        }
-        .flashcard {
-            background: linear-gradient(145deg, #fffbe7, #faecd1);
-            color: var(--dark);
-            padding: 40px 30px;
-            border-radius: 15px;
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.6s, box-shadow 0.3s;
-            transform-style: preserve-3d;
-            box-shadow: 0 15px 40px rgba(176,141,87,0.14);
-            position: relative;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(205, 127, 50, 0.3);
         }
-        .flashcard:hover {
-            box-shadow: 0 20px 50px rgba(176,141,87,0.19);
+        
+        .panel-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px rgba(205, 127, 50, 0.6));
         }
-        .flashcard.flipped {
-            transform: rotateY(180deg);
-        }
-        .flashcard .front, .flashcard .back {
-            backface-visibility: hidden;
-            position: absolute;
-            width: calc(100% - 60px);
-        }
-        .flashcard .back {
-            transform: rotateY(180deg);
-        }
-        .flashcard .question {
-            font-size: 1.3em;
-            font-weight: 600;
-            line-height: 1.5;
-        }
-        .flashcard .answer {
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        .flashcard .answer-label {
-            color: var(--success);
-            font-weight: bold;
-            font-size: 0.9em;
-            margin-bottom: 15px;
+        
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--history-bronze);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-        .flashcard .source {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e7c072;
-            font-size: 0.85em;
-            color: #9C7C38;
-            font-style: italic;
+        
+        .panel-body {
+            color: var(--text-primary);
+            line-height: 1.7;
         }
-        .flashcard .tap-hint {
-            position: absolute;
-            bottom: 15px;
-            font-size: 0.8em;
-            color: #b08d57;
-        }
-        .card-counter {
-            text-align: center;
+        
+        .intro-screen p {
             margin-bottom: 15px;
-            font-size: 0.95em;
-            color: var(--accent);
-            opacity: 0.8;
+            font-size: 1.05rem;
         }
-        /* QUIZ */
-        .quiz-question {
-            background: var(--darker);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--warning);
+        
+        .name-input-group {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
-        .quiz-question .label {
-            color: var(--warning);
-            font-size: 0.85em;
+        
+        .input-wrapper label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--history-bronze);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
         }
-        .quiz-choices {
+        
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--deep-dark);
+            border: 1px solid var(--history-bronze);
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--history-amber);
+            box-shadow: 0 0 15px rgba(212, 165, 116, 0.3);
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, var(--history-bronze), var(--history-sepia));
+            color: var(--text-primary);
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+        }
+        
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(205, 127, 50, 0.5);
+        }
+        
+        .action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .flashcard-container {
+            perspective: 1000px;
+            margin: 30px 0;
+        }
+        
+        .flashcard {
+            width: 100%;
+            min-height: 320px;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-face {
+            width: 100%;
+            min-height: 320px;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 35px;
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.1), rgba(212, 165, 116, 0.1));
+            border: 2px solid var(--history-bronze);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(205, 127, 50, 0.2);
+        }
+        
+        .flashcard-front {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.15), rgba(176, 137, 104, 0.15));
+        }
+        
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(232, 213, 181, 0.15));
+        }
+        
+        .flashcard-question {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--history-bronze);
+            margin-bottom: 15px;
+        }
+        
+        .flashcard-hint {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--history-amber);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .flashcard-answer {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: center;
+            color: var(--text-primary);
+        }
+        
+        .flashcard-answer strong {
+            color: var(--history-amber);
+        }
+        
+        .flashcard-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .nav-btn {
+            flex: 1;
+            padding: 12px 25px;
+            background: transparent;
+            border: 2px solid var(--history-bronze);
+            color: var(--history-bronze);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover:not(:disabled) {
+            background: var(--history-bronze);
+            color: var(--void-dark);
+            box-shadow: 0 0 20px rgba(205, 127, 50, 0.5);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .quiz-question {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--history-bronze);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .quiz-options {
             display: flex;
             flex-direction: column;
             gap: 12px;
+            margin-bottom: 20px;
         }
-        .quiz-choice {
-            background: rgba(255,255,255,0.12);
-            border: 2px solid rgba(255,255,255,0.13);
-            color: var(--dark);
-            padding: 18px 20px;
-            border-radius: 10px;
+        
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: rgba(205, 127, 50, 0.05);
+            border: 2px solid rgba(205, 127, 50, 0.3);
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            text-align: left;
-            font-size: 1rem;
         }
-        .quiz-choice:hover {
-            background: rgba(255, 196, 0, 0.14);
-            border-color: var(--primary);
+        
+        .quiz-option:hover {
+            background: rgba(205, 127, 50, 0.15);
+            border-color: var(--history-bronze);
             transform: translateX(5px);
         }
-        .quiz-choice.correct {
-            background: rgba(176, 141, 87, 0.13);
-            border-color: var(--success);
+        
+        .quiz-option.selected {
+            background: rgba(205, 127, 50, 0.2);
+            border-color: var(--history-bronze);
+            box-shadow: 0 0 20px rgba(205, 127, 50, 0.3);
         }
-        .quiz-choice.incorrect {
-            background: rgba(156, 124, 56, 0.11);
-            border-color: var(--accent);
+        
+        .quiz-option.correct {
+            background: rgba(212, 165, 116, 0.2);
+            border-color: var(--history-amber);
+            box-shadow: 0 0 20px rgba(212, 165, 116, 0.4);
         }
-        .quiz-choice.disabled {
-            pointer-events: none;
-            opacity: 0.6;
+        
+        .quiz-option.incorrect {
+            background: rgba(176, 137, 104, 0.2);
+            border-color: var(--history-sepia);
+            box-shadow: 0 0 20px rgba(176, 137, 104, 0.4);
         }
-        /* FEEDBACK */
-        .feedback {
+        
+        .option-marker {
+            width: 35px;
+            height: 35px;
+            background: var(--history-bronze);
+            color: var(--void-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .option-text {
+            flex: 1;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .feedback-box {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(232, 213, 181, 0.15));
+            border: 2px solid var(--history-amber);
+            border-radius: 8px;
             padding: 20px;
-            border-radius: 12px;
             margin-top: 20px;
-            animation: slideIn 0.3s ease;
+            box-shadow: 0 0 25px rgba(212, 165, 116, 0.3);
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .feedback-box.incorrect-feedback {
+            background: linear-gradient(135deg, rgba(176, 137, 104, 0.15), rgba(205, 127, 50, 0.15));
+            border-color: var(--history-sepia);
+            box-shadow: 0 0 25px rgba(176, 137, 104, 0.3);
         }
-        .feedback.correct {
-            background: rgba(176, 141, 87, 0.13);
-            border: 1px solid var(--success);
-        }
-        .feedback.incorrect {
-            background: rgba(156, 124, 56, 0.11);
-            border: 1px solid var(--accent);
-        }
-        .feedback .title {
-            font-weight: bold;
-            font-size: 1.1em;
+        
+        .feedback-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--history-amber);
             margin-bottom: 10px;
-        }
-        .feedback.correct .title { color: var(--success); }
-        .feedback.incorrect .title { color: var(--accent); }
-        /* DOJO */
-        .dojo-scenario {
-            background: linear-gradient(135deg, var(--darker), #e2cda1);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(176,141,87,0.13);
-            margin-bottom: 20px;
-        }
-        .dojo-scenario .context-label {
-            color: var(--accent);
-            font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
         }
-        .dojo-scenario .context {
-            font-size: 1.05em;
-            line-height: 1.7;
+        
+        .incorrect-feedback .feedback-title {
+            color: var(--history-sepia);
+        }
+        
+        .scenario-context {
+            background: rgba(205, 127, 50, 0.1);
+            border-left: 4px solid var(--history-bronze);
+            padding: 15px 20px;
             margin-bottom: 20px;
+            font-style: italic;
+            color: var(--text-secondary);
         }
-        .dojo-scenario .question {
-            background: rgba(250, 243, 227, 0.24);
-            padding: 15px;
+        
+        .scenario-intro {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .choice-btn {
+            padding: 18px 25px;
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.1), rgba(212, 165, 116, 0.1));
+            border: 2px solid rgba(205, 127, 50, 0.4);
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
             border-radius: 8px;
-            border-left: 3px solid var(--warning);
+            transition: all 0.3s;
+            line-height: 1.5;
         }
-        .impact-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin-left: 10px;
+        
+        .choice-btn:hover {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(212, 165, 116, 0.2));
+            border-color: var(--history-bronze);
+            transform: translateX(8px);
+            box-shadow: 0 0 25px rgba(205, 127, 50, 0.3);
         }
-        .impact-positive { background: var(--success); color: #fff; }
-        .impact-negative { background: var(--accent); color: #fff; }
-        .impact-neutral { background: var(--warning); color: #000; }
-        /* ... (le reste reste inchangé, continue) ... */
+        
+        .choice-result {
+            background: rgba(176, 137, 104, 0.1);
+            border: 2px solid var(--history-sepia);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .choice-result p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .impact-score {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .impact-item {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .impact-item.positive {
+            background: rgba(212, 165, 116, 0.2);
+            border: 1px solid var(--history-amber);
+            color: var(--history-amber);
+        }
+        
+        .impact-item.negative {
+            background: rgba(176, 137, 104, 0.2);
+            border: 1px solid var(--history-sepia);
+            color: var(--history-sepia);
+        }
+        
+        .completion-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .completion-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 30px rgba(205, 127, 50, 0.8));
+            animation: completionFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes completionFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .completion-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--history-bronze), var(--history-amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .completion-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--history-bronze);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--history-bronze);
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
-    <!-- React 18 CDN -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 </head>
 <body>
+    <div class="history-bg"></div>
+    <div class="stars-overlay"></div>
     <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script>
-        // ==== DONNÉES DU MODULE HISTOIRE_02 ====
-        const MODULE_DATA = {
-            id: "HISTOIRE_02",
-            version: "1.0.0",
-            titre: "RITES ET BIZUTAGES",
-            sous_titre: "Quand la violence devient tradition",
-            description: "Explorer comment certaines violences ont été intégrées, justifiées ou valorisées comme des rites de passage, dans l’école et au-delà.",
-            auteur: "Programme pHARe",
-            niveau1: {
-                titre: "La violence ritualisée",
-                type: "flashcards",
-                xp_reward: 50,
-                cartes: [
-                    {
-                        recto: "Qu’est-ce qu’un rite de passage ?",
-                        verso: "Un rite de passage est une pratique symbolique censée marquer le passage d’un individu d’un statut à un autre.\n\nDans certains contextes, ces rites ont inclus des humiliations ou des violences.",
-                        source: "Anthropologie sociale"
-                    },
-                    {
-                        recto: "Pourquoi le bizutage a-t-il longtemps été toléré ?",
-                        verso: "Parce qu’il était présenté comme une tradition, un jeu ou une épreuve d’intégration.\n\nLa souffrance était minimisée au nom de l’appartenance au groupe.",
-                        source: "Histoire des institutions éducatives"
-                    },
-                    {
-                        recto: "Quelle est la logique derrière « on est tous passés par là » ?",
-                        verso: "Cette phrase normalise la violence en la rendant collective et inévitable.\n\nElle empêche toute remise en question du système.",
-                        source: "Analyse psychosociale"
-                    },
-                    {
-                        recto: "Quelle différence entre rite et harcèlement ?",
-                        verso: "Un rite est présenté comme temporaire et symbolique.\n\nLe harcèlement, lui, est répété, subi et destructeur.\n\nMais dans les faits, la frontière a souvent été floue.",
-                        source: "Approche juridique et sociologique"
-                    },
-                    {
-                        recto: "Pourquoi ces pratiques sont-elles aujourd’hui remises en cause ?",
-                        verso: "Parce que leurs effets psychologiques, parfois dramatiques, ont été reconnus.\n\nLa tradition ne justifie plus la souffrance.",
-                        source: "Évolutions contemporaines"
-                    }
-                ]
-            },
-            niveau2: {
-                titre: "Tradition ou violence ?",
-                type: "quiz",
-                xp_reward: 100,
-                questions: [
-                    {
-                        texte: "Dans un établissement, des élèves plus âgés imposent des gages humiliants aux nouveaux.",
-                        question: "Quel argument est le plus souvent utilisé pour justifier ces actes ?",
-                        choix: [
-                            {
-                                txt: "C’est une tradition qui renforce la cohésion.",
-                                correct: true,
-                                feedback: "Exact. La tradition est souvent invoquée pour masquer la violence réelle subie."
-                            },
-                            {
-                                txt: "Cela permet d’évaluer les compétences scolaires.",
-                                correct: false,
-                                feedback: "Non. Ces pratiques n’ont aucun lien avec les compétences scolaires."
-                            }
-                        ]
-                    },
-                    {
-                        texte: "Un élève refuse de participer à un bizutage.",
-                        question: "Quelle est la réaction la plus probable du groupe ?",
-                        choix: [
-                            {
-                                txt: "Respecter son choix sans conséquence.",
-                                correct: false,
-                                feedback: "Rarement. Le refus est souvent sanctionné par l’exclusion ou la stigmatisation."
-                            },
-                            {
-                                txt: "Le mettre à l’écart ou le ridiculiser.",
-                                correct: true,
-                                feedback: "Correct. Le groupe exerce une pression pour maintenir la norme."
-                            }
-                        ]
-                    },
-                    {
-                        texte: "Un adulte affirme : « Ce n’est qu’un jeu ». ",
-                        question: "Quel est le problème principal de cette affirmation ?",
-                        choix: [
-                            {
-                                txt: "Elle ignore le ressenti et la souffrance de la victime.",
-                                correct: true,
-                                feedback: "Exact. Le caractère ludique est défini par ceux qui dominent, pas par ceux qui subissent."
-                            },
-                            {
-                                txt: "Elle exagère la gravité de la situation.",
-                                correct: false,
-                                feedback: "Non. Elle tend au contraire à minimiser les effets réels."
-                            }
-                        ]
-                    }
-                ]
-            },
-            niveau3: {
-                titre: "Face à la tradition",
-                type: "dojo",
-                xp_reward: 150,
-                scenarios: [
-                    {
-                        contexte: "Dans ton établissement, un rituel d’accueil implique des humiliations publiques.",
-                        question: "Quelle analyse est la plus juste ?",
-                        choix: [
-                            {
-                                txt: "La tradition ne justifie pas une atteinte à la dignité.",
-                                impact: 100,
-                                level: "optimal",
-                                feedback: "Exact. La dignité et la sécurité priment sur toute tradition."
-                            },
-                            {
-                                txt: "Si tout le monde participe, ce n’est pas grave.",
-                                impact: -20,
-                                level: "error",
-                                feedback: "Erreur. Le caractère collectif ne supprime pas la violence."
-                            },
-                            {
-                                txt: "C’est aux nouveaux de s’adapter.",
-                                impact: -30,
-                                level: "error",
-                                feedback: "Non. Cette logique inverse la responsabilité."
-                            }
-                        ]
-                    },
-                    {
-                        contexte: "Un adulte minimise un bizutage en parlant de plaisanterie.",
-                        question: "Quelle posture est la plus responsable ?",
-                        choix: [
-                            {
-                                txt: "Écouter les élèves concernés et évaluer les impacts réels.",
-                                impact: 80,
-                                level: "good",
-                                feedback: "Oui. L’écoute permet de sortir du déni."
-                            },
-                            {
-                                txt: "Ignorer pour éviter les conflits.",
-                                impact: -20,
-                                level: "error",
-                                feedback: "Non. L’inaction renforce le système."
-                            },
-                            {
-                                txt: "Encourager la pratique pour maintenir la tradition.",
-                                impact: -40,
-                                level: "error",
-                                feedback: "Grave erreur. Cela institutionnalise la violence."
-                            }
-                        ]
-                    }
-                ]
-            }
-        };
-        // ============================================================
-        // UTILITAIRES DE SAUVEGARDE
-        // ============================================================
-        const generateSaveCode = (progress) => {
-            const payload = {
-                v: 1, // version du format
-                d: new Date().toISOString(),
-                m: MODULE_DATA.id,
-                mv: MODULE_DATA.version,
-                n: progress.nom || "Anonyme",
-                c: progress.classe || "",
-                l: progress.currentLevel,
-                s: progress.score,
-                x: progress.xp,
-                q: progress.quizScore,
-                dj: progress.dojoScore,
-                f: progress.finished
-            };
-            return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-        };
-
-        const decodeSaveCode = (code) => {
-            try {
-                const data = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
-                if (data.m !== MODULE_DATA.id) return { valid: false, error: "Ce code est pour un autre module." };
-                return { valid: true, data };
-            } catch (e) {
-                return { valid: false, error: "Code invalide ou corrompu." };
-            }
-        };
-
-        const formatDate = (isoString) => {
-            return new Date(isoString).toLocaleDateString('fr-FR', {
-                day: '2-digit', month: '2-digit', year: 'numeric',
-                hour: '2-digit', minute: '2-digit'
-            });
-        };
-
-        // ============================================================
-        // COMPOSANTS REACT (sans JSX - compatible navigateur)
-        // ============================================================
+        const { useState } = React;
         const e = React.createElement;
-        const { useState, useEffect } = React;
 
-        // --- Header Component ---
-        function Header({ showProgress, xp, currentLevel }) {
-            return e('div', { className: 'header' },
-                e('h1', null, MODULE_DATA.titre),
-                e('div', { className: 'subtitle' }, MODULE_DATA.sous_titre),
-                showProgress && e('div', { className: 'badge' }, `⚡ ${xp} XP`)
-            );
-        }
+        const MODULE_ID = "HISTOIRE_02";
+        const MODULE_TITLE = "La Naissance Scientifique";
+        const MODULE_VERSION = "2.0";
 
-        // --- Progress Bar Component ---
-        function ProgressBar({ currentLevel, xp }) {
-            const totalLevels = 3;
-            const percent = Math.min(100, (currentLevel / totalLevels) * 100);
-            
-            return e('div', { className: 'progress-container' },
-                e('div', { className: 'progress-stats' },
-                    e('span', null, `Niveau ${currentLevel}/3`),
-                    e('span', { className: 'xp-badge' }, `${xp} XP`)
-                ),
-                e('div', { className: 'progress-bar-outer' },
-                    e('div', { className: 'progress-bar-inner', style: { width: `${percent}%` } })
-                )
-            );
-        }
+        const flashcardsData = [
+            {
+                question: "Qui est Peter-Paul Heinemann et pourquoi est-il crucial ?",
+                hint: "[ Clique pour révéler ]",
+                answer: "Médecin suédois qui, en <strong>1969, introduit le terme 'mobbing'</strong> pour décrire l'attaque collective d'enfants contre un camarade 'déviant'. Inspiré de l'éthologie (Konrad Lorenz), il est le <strong>premier à nommer scientifiquement</strong> la violence de groupe entre pairs."
+            },
+            {
+                question: "Quelle est la révolution d'Olweus (années 1970) ?",
+                hint: "[ Clique pour révéler ]",
+                answer: "Dan Olweus définit le <strong>'bullying'</strong> par 3 critères objectifs : <strong>intentionnalité</strong> (volonté de nuire), <strong>répétition</strong> (durée certaine), <strong>déséquilibre de pouvoir</strong> (asymétrie). Il transforme une intuition floue en concept scientifique mesurable."
+            },
+            {
+                question: "Quel événement déclenche la première campagne nationale (1982) ?",
+                hint: "[ Clique pour révéler ]",
+                answer: "Le <strong>suicide de trois jeunes Norvégiens</strong> victimes de harcèlement crée une onde de choc. La Norvège lance la <strong>première campagne nationale anti-harcèlement</strong> de l'histoire, dirigée par Olweus. Le problème passe du statut d'anecdote à celui de <strong>crise de santé publique</strong>."
+            },
+            {
+                question: "Pourquoi les 3 critères d'Olweus sont-ils révolutionnaires ?",
+                hint: "[ Clique pour révéler ]",
+                answer: "Ils permettent de <strong>distinguer le harcèlement d'un conflit ponctuel</strong>. Intention + Répétition + Déséquilibre = harcèlement. Un coup isolé ≠ harcèlement. Cette définition objective a rendu possible <strong>la mesure, la recherche, et la prévention</strong>."
+            }
+        ];
 
-        // --- Level Indicator Component ---
-        function LevelIndicator({ current }) {
-            const levels = ['📚', '🔍', '⚔️'];
-            return e('div', { className: 'level-indicator' },
-                levels.map((emoji, i) => 
-                    e('div', { 
-                        key: i,
-                        className: `level-dot ${i + 1 === current ? 'active' : ''} ${i + 1 < current ? 'completed' : ''}`
-                    }, i + 1 < current ? '✓' : emoji)
-                )
-            );
-        }
+        const quizData = [
+            {
+                question: "Heinemann parle de 'mobbing'. Pourquoi ce mot emprunté à l'éthologie (étude du comportement animal) est-il important ?",
+                options: [
+                    "Parce qu'il veut comparer les enfants à des animaux",
+                    "Parce qu'il identifie un mécanisme de groupe pathologique, pas juste un problème individuel",
+                    "Parce qu'il n'avait pas d'autre mot",
+                    "Parce que les Suédois aiment les animaux"
+                ],
+                correct: 1,
+                feedback: "Exact. Le 'mobbing' (harcèlement de meute) montre que le problème n'est pas 'un méchant + une victime', mais une DYNAMIQUE DE GROUPE toxique. L'attaque collective révèle une pathologie sociale, pas juste individuelle."
+            },
+            {
+                question: "Les 3 critères d'Olweus : Intention, Répétition, Déséquilibre. Pourquoi est-ce crucial de tous les avoir ?",
+                options: [
+                    "Pour remplir des formulaires administratifs",
+                    "Pour différencier harcèlement (systémique, asymétrique) et conflit ponctuel (bilatéral, résolvable)",
+                    "Pour faire savant",
+                    "Parce que c'est plus facile à retenir en 3"
+                ],
+                correct: 1,
+                feedback: "Parfait. Sans ces critères, tout devient 'harcèlement' (même une dispute d'un jour). Olweus permet de cibler les vraies violences systémiques où la victime est piégée (déséquilibre) dans une spirale qui dure (répétition) et qui est voulue (intention)."
+            },
+            {
+                question: "1982 : 3 jeunes Norvégiens se suicident. Pourquoi cet événement change-t-il tout ?",
+                options: [
+                    "Parce que les médias en parlent",
+                    "Parce qu'il force la société à reconnaître que le harcèlement TUE, transformant un problème 'moral' en urgence de santé publique",
+                    "Parce que les parents portent plainte",
+                    "Parce que la Norvège est un petit pays"
+                ],
+                correct: 1,
+                feedback: "Exactement. Le suicide rend le harcèlement visible comme MORTEL. Ce n'est plus 'juste une phase de l'enfance', c'est une violence létale. Cela légitime l'intervention étatique massive (première campagne nationale mondiale)."
+            },
+            {
+                question: "Avant Olweus (1970), pourquoi les écoles n'agissaient-elles pas contre le harcèlement malgré sa présence ?",
+                options: [
+                    "Parce qu'elles étaient méchantes",
+                    "Parce que sans définition scientifique claire, impossible de mesurer, former, ou intervenir de manière systématique",
+                    "Parce qu'elles n'avaient pas de budget",
+                    "Parce que les élèves ne se plaignaient jamais"
+                ],
+                correct: 1,
+                feedback: "Parfait. 'Ce qui ne se mesure pas n'existe pas pour l'institution'. Sans critères objectifs (Olweus), comment former les profs ? Comment évaluer une politique ? La science a rendu le problème OPÉRATIONNEL pour les institutions."
+            }
+        ];
 
-        // --- Flashcard Component ---
-        function Flashcard({ card, onNext, isLast, onComplete }) {
-            const [flipped, setFlipped] = useState(false);
-            
-            return e('div', { className: 'flashcard-container' },
-                e('div', { 
-                    className: `flashcard ${flipped ? 'flipped' : ''}`,
-                    onClick: () => setFlipped(!flipped)
-                },
-                    e('div', { className: 'front' },
-                        e('div', { className: 'question' }, card.recto),
-                        e('div', { className: 'tap-hint' }, '👆 Clique pour retourner')
-                    ),
-                    e('div', { className: 'back' },
-                        e('div', { className: 'answer-label' }, '✓ Réponse'),
-                        e('div', { className: 'answer', style: { whiteSpace: 'pre-line' } }, card.verso),
-                        e('div', { className: 'source' }, `📖 ${card.source}`)
-                    )
-                ),
-                e('div', { className: 'text-center mt-20' },
-                    flipped && (
-                        isLast 
-                            ? e('button', { className: 'btn btn-success', onClick: onComplete }, '✓ VALIDER LE NIVEAU 1')
-                            : e('button', { className: 'btn', onClick: () => { onNext(); setFlipped(false); } }, 'CARTE SUIVANTE →')
-                    )
-                )
-            );
-        }
+        const scenarioData = [
+            {
+                title: "Le Critère Manquant",
+                context: "Deux élèves se disputent violemment depuis 1 semaine. Ils ont la même force physique et sociale. C'est tendu, mais aucun des deux ne domine vraiment.",
+                intro: "Un adulte te demande : 'C'est du harcèlement ?' Grâce aux 3 critères d'Olweus, que réponds-tu ?",
+                choices: [
+                    {
+                        text: "Oui, c'est du harcèlement parce qu'ils se battent depuis 1 semaine (répétition)",
+                        result: "Erreur. Il manque le DÉSÉQUILIBRE DE POUVOIR. Si les deux ont la même force et peuvent se défendre mutuellement, c'est un conflit bilatéral, pas du harcèlement. Olweus distingue précisément ces cas.",
+                        impact: { precision: -20, comprehension: -15 }
+                    },
+                    {
+                        text: "Non, ce n'est pas du harcèlement. Il y a répétition et intention, mais pas de déséquilibre : c'est un conflit qui nécessite médiation, pas protocole anti-harcèlement",
+                        result: "Excellent. Tu appliques rigoureusement les 3 critères. L'absence d'asymétrie change la nature du problème ET la réponse institutionnelle. Confondre conflit et harcèlement dilue les ressources et banalise le vrai harcèlement.",
+                        impact: { precision: +35, comprehension: +35 }
+                    },
+                    {
+                        text: "Je ne sais pas, c'est compliqué",
+                        result: "Dommage. Les 3 critères d'Olweus existent précisément pour trancher ces cas ambigus. C'est un outil de diagnostic, pas une opinion subjective.",
+                        impact: { precision: -10, comprehension: -5 }
+                    }
+                ]
+            },
+            {
+                title: "L'Héritage d'Olweus",
+                context: "Ton collège met en place un 'protocole anti-harcèlement'. Mais il se contente de punir les agresseurs après coup, sans travail préventif sur les dynamiques de groupe.",
+                intro: "Tu te souviens qu'Heinemann parlait de 'mobbing' (dynamique collective). Que penses-tu de ce protocole ?",
+                choices: [
+                    {
+                        text: "C'est bien, punir les harceleurs suffit",
+                        result: "Non. Heinemann a montré que le harcèlement est un phénomène DE GROUPE. Punir l'individu sans traiter la dynamique collective (témoins passifs, climat permissif) ne résout rien. Le groupe produira un nouveau harceleur.",
+                        impact: { vision: -30, efficacite: -25 }
+                    },
+                    {
+                        text: "C'est insuffisant. Le harcèlement est une pathologie de groupe (Heinemann). Il faut former TOUS les élèves (témoins inclus) pour changer les normes collectives, pas juste punir",
+                        result: "Parfait. Tu comprends l'insight d'Heinemann : le 'mobbing' est systémique. Seule une intervention sur le CLIMAT SCOLAIRE (formation ambassadeurs, empathie collective, responsabilisation témoins) peut briser la dynamique. C'est la base de pHARe.",
+                        impact: { vision: +40, efficacite: +35 }
+                    },
+                    {
+                        text: "Je ne sais pas, c'est au collège de décider",
+                        result: "Passivité. Pourtant, tu as les connaissances historiques pour identifier un protocole inefficace. Les chercheurs des années 70 ont montré la voie : agir sur le groupe, pas juste l'individu.",
+                        impact: { vision: -15, efficacite: -10 }
+                    }
+                ]
+            }
+        ];
 
-        // --- Quiz Component ---
-        function QuizQuestion({ question, onAnswer }) {
-            const [answered, setAnswered] = useState(false);
-            const [selectedIdx, setSelectedIdx] = useState(null);
-            const [feedback, setFeedback] = useState(null);
-
-            const handleChoice = (choice, idx) => {
-                if (answered) return;
-                setAnswered(true);
-                setSelectedIdx(idx);
-                setFeedback({ correct: choice.correct, text: choice.feedback });
-            };
-
-            const handleNext = () => {
-                onAnswer(feedback.correct);
-            };
-
-            return e('div', null,
-                e('div', { className: 'quiz-question' },
-                    e('div', { className: 'label' }, '📋 SITUATION'),
-                    e('p', { style: { marginBottom: '15px', lineHeight: '1.6' } }, question.texte),
-                    question.question && e('p', { style: { fontWeight: 'bold', color: '#f39c12' } }, `❓ ${question.question}`)
-                ),
-                e('div', { className: 'quiz-choices' },
-                    question.choix.map((choice, idx) => 
-                        e('button', {
-                            key: idx,
-                            className: `quiz-choice ${answered ? (idx === selectedIdx ? (choice.correct ? 'correct' : 'incorrect') : 'disabled') : ''}`,
-                            onClick: () => handleChoice(choice, idx),
-                            disabled: answered
-                        }, choice.txt)
-                    )
-                ),
-                feedback && e('div', { className: `feedback ${feedback.correct ? 'correct' : 'incorrect'}` },
-                    e('div', { className: 'title' }, feedback.correct ? '✓ CORRECT !' : '✗ ERREUR D\'ANALYSE'),
-                    e('p', null, feedback.text),
-                    e('button', { className: 'btn mt-20', onClick: handleNext }, 'CONTINUER →')
-                )
-            );
-        }
-
-        // --- Dojo Component ---
-        function DojoScenario({ scenario, onAnswer }) {
-            const [answered, setAnswered] = useState(false);
-            const [selectedChoice, setSelectedChoice] = useState(null);
-
-            const handleChoice = (choice) => {
-                if (answered) return;
-                setAnswered(true);
-                setSelectedChoice(choice);
-            };
-
-            const getImpactClass = (impact) => {
-                if (impact >= 80) return 'impact-positive';
-                if (impact > 0) return 'impact-neutral';
-                return 'impact-negative';
-            };
-
-            const getImpactLabel = (impact) => {
-                if (impact >= 80) return `+${impact} pts`;
-                if (impact > 0) return `+${impact} pts`;
-                return `${impact} pts`;
-            };
-
-            return e('div', null,
-                e('div', { className: 'dojo-scenario' },
-                    e('div', { className: 'context-label' }, '🎬 SCÉNARIO'),
-                    e('p', { className: 'context' }, scenario.contexte),
-                    e('div', { className: 'question' },
-                        e('strong', null, '❓ ', scenario.question)
-                    )
-                ),
-                e('div', { className: 'quiz-choices' },
-                    scenario.choix.map((choice, idx) => 
-                        e('button', {
-                            key: idx,
-                            className: `quiz-choice ${answered ? (choice === selectedChoice ? (choice.level === 'optimal' ? 'correct' : choice.level === 'error' ? 'incorrect' : '') : 'disabled') : ''}`,
-                            onClick: () => handleChoice(choice),
-                            disabled: answered
-                        }, 
-                            choice.txt,
-                            answered && e('span', { className: `impact-badge ${getImpactClass(choice.impact)}` }, getImpactLabel(choice.impact))
-                        )
-                    )
-                ),
-                selectedChoice && e('div', { className: `feedback ${selectedChoice.level === 'optimal' ? 'correct' : selectedChoice.level === 'error' ? 'incorrect' : 'correct'}` },
-                    e('div', { className: 'title' }, 
-                        selectedChoice.level === 'optimal' ? '🏆 DÉCISION OPTIMALE !' : 
-                        selectedChoice.level === 'error' ? '⚠️ DÉCISION RISQUÉE' : '👍 BONNE PISTE'
-                    ),
-                    e('p', null, selectedChoice.feedback),
-                    e('button', { className: 'btn mt-20', onClick: () => onAnswer(selectedChoice.impact) }, 'CONTINUER →')
-                )
-            );
-        }
-
-        // --- Report Component ---
-        function Report({ progress, onRestart, onMenu }) {
-            const saveCode = generateSaveCode(progress);
-            const [copied, setCopied] = useState(false);
-
-            const copyToClipboard = () => {
-                navigator.clipboard.writeText(saveCode).then(() => {
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                });
-            };
-
-            const getMasteryLevel = () => {
-                const total = progress.quizScore + progress.dojoScore;
-                if (total >= 500) return { label: 'EXPERT', class: 'mastery-expert' };
-                if (total >= 300) return { label: 'CONFIRMÉ', class: 'mastery-confirmed' };
-                return { label: 'EN FORMATION', class: 'mastery-learning' };
-            };
-
-            const mastery = getMasteryLevel();
-
-            return e('div', null,
-                e('div', { className: 'report' },
-                    e('div', { className: 'report-header' },
-                        e('span', { className: 'emoji-big' }, '🏅'),
-                        e('h2', null, 'MISSION ACCOMPLIE'),
-                        e('p', null, MODULE_DATA.titre)
-                    ),
-                    e('div', { className: 'report-body' },
-                        e('div', { className: 'report-stat' },
-                            e('span', { className: 'label' }, 'Agent'),
-                            e('span', { className: 'value' }, progress.nom || 'Anonyme')
-                        ),
-                        progress.classe && e('div', { className: 'report-stat' },
-                            e('span', { className: 'label' }, 'Classe'),
-                            e('span', { className: 'value' }, progress.classe)
-                        ),
-                        e('div', { className: 'report-stat' },
-                            e('span', { className: 'label' }, 'XP Total'),
-                            e('span', { className: 'value' }, `${progress.xp} XP`)
-                        ),
-                        e('div', { className: 'report-stat' },
-                            e('span', { className: 'label' }, 'Score Quiz'),
-                            e('span', { className: 'value' }, `${progress.quizScore} pts`)
-                        ),
-                        e('div', { className: 'report-stat' },
-                            e('span', { className: 'label' }, 'Score Dojo'),
-                            e('span', { className: 'value' }, `${progress.dojoScore} pts`)
-                        ),
-                        e('div', { className: 'report-stat' },
-                            e('span', { className: 'label' }, 'Niveau de Maîtrise'),
-                            e('span', { className: `mastery-badge ${mastery.class}` }, mastery.label)
-                        )
-                    )
-                ),
-                e('div', { className: 'save-code-section' },
-                    e('h3', { style: { color: '#0f0', marginBottom: '15px' } }, '💾 CODE DE SAUVEGARDE'),
-                    e('p', { style: { opacity: 0.8, marginBottom: '10px' } }, 
-                        'Ce code contient ta progression. Conserve-le précieusement !'
-                    ),
-                    e('div', { className: 'save-code-box' }, saveCode),
-                    e('button', { 
-                        className: `btn ${copied ? 'btn-success' : ''}`,
-                        onClick: copyToClipboard 
-                    }, copied ? '✓ COPIÉ !' : '📋 COPIER LE CODE'),
-                    e('div', { className: 'save-instructions' },
-                        e('h4', null, '📌 Que faire avec ce code ?'),
-                        e('ul', null,
-                            e('li', null, '1. GARDE-LE pour reprendre plus tard au même niveau'),
-                            e('li', null, '2. ENVOIE-LE AU CPE pour valider ton badge pHARe'),
-                            e('li', null, '3. Tu peux le coller dans un mail ou un message')
-                        )
-                    )
-                ),
-                e('div', { className: 'btn-group' },
-                    e('button', { className: 'btn btn-secondary', onClick: onMenu }, '🏠 RETOUR AU MENU'),
-                    e('button', { className: 'btn btn-warning', onClick: onRestart }, '🔄 RECOMMENCER LE MODULE')
-                )
-            );
-        }
-
-        // --- Main App Component ---
         function App() {
-            const [mode, setMode] = useState('menu'); // menu, register, game, report, load
-            const [currentLevel, setCurrentLevel] = useState(1);
-            const [cardIdx, setCardIdx] = useState(0);
-            const [questionIdx, setQuestionIdx] = useState(0);
-            const [scenarioIdx, setScenarioIdx] = useState(0);
-            const [xp, setXp] = useState(0);
-            const [quizScore, setQuizScore] = useState(0);
-            const [dojoScore, setDojoScore] = useState(0);
-            const [nom, setNom] = useState('');
-            const [classe, setClasse] = useState('');
-            const [inputCode, setInputCode] = useState('');
-            const [loadError, setLoadError] = useState('');
+            const [gameState, setGameState] = useState("intro");
+            const [playerData, setPlayerData] = useState({
+                name: "",
+                class: "",
+                xp: 0,
+                score: 0,
+                quizScore: 0,
+                scenarioScore: 0
+            });
 
-            const resetProgress = () => {
-                setCurrentLevel(1);
-                setCardIdx(0);
-                setQuestionIdx(0);
-                setScenarioIdx(0);
-                setXp(0);
-                setQuizScore(0);
-                setDojoScore(0);
-            };
+            const [currentFlashcard, setCurrentFlashcard] = useState(0);
+            const [flashcardFlipped, setFlashcardFlipped] = useState(false);
 
-            const progress = {
-                nom, classe, currentLevel, xp, quizScore, dojoScore,
-                score: quizScore + dojoScore,
-                finished: mode === 'report'
-            };
+            const [currentQuiz, setCurrentQuiz] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showQuizFeedback, setShowQuizFeedback] = useState(false);
 
-            // --- MENU ---
-            if (mode === 'menu') {
-                return e('div', { className: 'app-container' },
-                    e(Header, { showProgress: false }),
-                    e('div', { className: 'card', style: { marginTop: '20px' } },
-                        e('strong', null, '🎯 MISSION : '),
-                        MODULE_DATA.description
+            const [currentScenario, setCurrentScenario] = useState(0);
+            const [scenarioChoice, setScenarioChoice] = useState(null);
+            const [showScenarioResult, setShowScenarioResult] = useState(false);
+
+            function startGame() {
+                if (playerData.name.trim() && playerData.class.trim()) {
+                    setGameState("flashcards");
+                }
+            }
+
+            function nextFlashcard() {
+                if (currentFlashcard < flashcardsData.length - 1) {
+                    setCurrentFlashcard(prev => prev + 1);
+                    setFlashcardFlipped(false);
+                    setPlayerData(prev => ({ ...prev, xp: prev.xp + 10 }));
+                } else {
+                    setGameState("quiz");
+                    setPlayerData(prev => ({ ...prev, xp: prev.xp + 40 }));
+                }
+            }
+
+            function prevFlashcard() {
+                if (currentFlashcard > 0) {
+                    setCurrentFlashcard(prev => prev - 1);
+                    setFlashcardFlipped(false);
+                }
+            }
+
+            function selectQuizAnswer(index) {
+                if (showQuizFeedback) return;
+                setSelectedAnswer(index);
+            }
+
+            function validateQuizAnswer() {
+                setShowQuizFeedback(true);
+                const isCorrect = selectedAnswer === quizData[currentQuiz].correct;
+                if (isCorrect) {
+                    setPlayerData(prev => ({
+                        ...prev,
+                        score: prev.score + 25,
+                        quizScore: prev.quizScore + 25,
+                        xp: prev.xp + 25
+                    }));
+                }
+            }
+
+            function nextQuizQuestion() {
+                if (currentQuiz < quizData.length - 1) {
+                    setCurrentQuiz(prev => prev + 1);
+                    setSelectedAnswer(null);
+                    setShowQuizFeedback(false);
+                } else {
+                    setGameState("scenarios");
+                    setPlayerData(prev => ({ ...prev, xp: prev.xp + 50 }));
+                }
+            }
+
+            function makeScenarioChoice(index) {
+                setScenarioChoice(index);
+                setShowScenarioResult(true);
+
+                const choice = scenarioData[currentScenario].choices[index];
+                const values = Object.values(choice.impact);
+                const totalChange = Math.max(0, values.reduce((a, b) => a + b, 0));
+
+                setPlayerData(prev => ({
+                    ...prev,
+                    score: prev.score + totalChange,
+                    scenarioScore: prev.scenarioScore + totalChange,
+                    xp: prev.xp + 20
+                }));
+            }
+
+            function nextScenario() {
+                if (currentScenario < scenarioData.length - 1) {
+                    setCurrentScenario(prev => prev + 1);
+                    setScenarioChoice(null);
+                    setShowScenarioResult(false);
+                } else {
+                    setGameState("complete");
+                    setPlayerData(prev => ({ ...prev, xp: prev.xp + 75 }));
+                }
+            }
+
+            function renderIntro() {
+                return e("div", { className: "app-container" },
+                    e("div", { className: "header" },
+                        e("div", { className: "pillar-icon" }, "📜"),
+                        e("h1", { className: "glitch-title" }, "PIX-pHARe"),
+                        e("div", { className: "subtitle" }, "Pilier Histoire Sociétale"),
+                        e("div", { className: "module-badge" }, "MODULE 02")
                     ),
-                    e('div', { className: 'btn-group' },
-                        e('button', { className: 'btn btn-block', onClick: () => setMode('register') }, 
-                            '▶️ COMMENCER LA MISSION'
+                    e("div", { className: "content-panel" },
+                        e("div", { className: "panel-header" },
+                            e("div", { className: "panel-icon" }, "🔬"),
+                            e("div", { className: "panel-title" }, MODULE_TITLE)
                         ),
-                        e('button', { className: 'btn btn-secondary btn-block', onClick: () => setMode('load') }, 
-                            '📂 CHARGER UNE SAUVEGARDE'
+                        e("div", { className: "panel-body" },
+                            e("div", { className: "intro-screen" },
+                                e("p", null,
+                                    "1969-1982 : en moins de 15 ans, le harcèlement passe de l'invisibilité totale au statut de ", 
+                                    e("strong", { style: { color: "var(--history-amber)" } }, "problème de santé publique"), "."
+                                ),
+                                e("p", null,
+                                    "Grâce à Heinemann (mobbing), Olweus (bullying + 3 critères), et au choc du suicide de 3 jeunes Norvégiens, ", 
+                                    e("strong", { style: { color: "var(--history-bronze)" } }, "la science crée les outils"),
+                                    " pour combattre ce qui était autrefois 'normal'."
+                                ),
+                                e("p", null,
+                                    "Tu vas découvrir comment ", e("strong", null, "nommer scientifiquement un problème"), 
+                                    " le rend visible, mesurable, et donc combattable."
+                                )
+                            ),
+                            e("div", { className: "name-input-group" },
+                                e("div", { className: "input-wrapper" },
+                                    e("label", null, "Ton Pseudo :"),
+                                    e("input", {
+                                        type: "text",
+                                        value: playerData.name,
+                                        onChange: (ev) => setPlayerData(prev => ({ ...prev, name: ev.target.value })),
+                                        placeholder: "Entre ton prénom ou pseudo"
+                                    })
+                                ),
+                                e("div", { className: "input-wrapper" },
+                                    e("label", null, "Ta Classe :"),
+                                    e("input", {
+                                        type: "text",
+                                        value: playerData.class,
+                                        onChange: (ev) => setPlayerData(prev => ({ ...prev, class: ev.target.value })),
+                                        placeholder: "Ex: 4ème B"
+                                    })
+                                ),
+                                e("div", { style: { textAlign: "center", marginTop: "30px" } },
+                                    e("button", {
+                                        className: "action-btn",
+                                        onClick: startGame,
+                                        disabled: !playerData.name.trim() || !playerData.class.trim()
+                                    }, "[ COMMENCER ]")
+                                )
+                            )
                         )
-                    ),
-                    e('div', { style: { marginTop: '30px', textAlign: 'center', opacity: 0.6, fontSize: '0.85em' } },
-                        `Module ${MODULE_DATA.id} v${MODULE_DATA.version} — ${MODULE_DATA.auteur}`
                     )
                 );
             }
 
-            // --- REGISTER ---
-            if (mode === 'register') {
-                const startGame = () => {
-                    if (!nom.trim()) {
-                        alert('Merci d\'entrer ton prénom ou pseudo !');
-                        return;
-                    }
-                    setMode('game');
-                };
+            function renderFlashcards() {
+                const card = flashcardsData[currentFlashcard];
 
-                return e('div', { className: 'app-container' },
-                    e(Header, { showProgress: false }),
-                    e('div', { className: 'card' },
-                        e('h3', { style: { marginBottom: '20px' } }, '👤 Identification de l\'Agent'),
-                        e('div', { style: { marginBottom: '15px' } },
-                            e('label', { style: { display: 'block', marginBottom: '5px', fontWeight: 'bold' } }, 'Prénom ou Pseudo *'),
-                            e('input', {
-                                type: 'text',
-                                value: nom,
-                                onChange: (ev) => setNom(ev.target.value),
-                                placeholder: 'Ex: Alex',
-                                style: { width: '100%', padding: '12px', borderRadius: '8px', border: '2px solid #ddd', fontSize: '1rem' }
-                            })
+                return e("div", { className: "app-container" },
+                    e("div", { className: "header" },
+                        e("div", { className: "pillar-icon" }, "📜"),
+                        e("h1", { className: "glitch-title" }, MODULE_TITLE),
+                        e("div", { className: "subtitle" }, "Niveau 1 : Révolution Conceptuelle")
+                    ),
+                    e("div", { className: "progress-bar" },
+                        e("div", { className: "progress-node active" }, "1"),
+                        e("div", { className: "progress-node" }, "2"),
+                        e("div", { className: "progress-node" }, "3")
+                    ),
+                    e("div", { className: "xp-display" },
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "XP"),
+                            e("div", { className: "xp-value" }, playerData.xp)
                         ),
-                        e('div', { style: { marginBottom: '15px' } },
-                            e('label', { style: { display: 'block', marginBottom: '5px', fontWeight: 'bold' } }, 'Classe (optionnel)'),
-                            e('input', {
-                                type: 'text',
-                                value: classe,
-                                onChange: (ev) => setClasse(ev.target.value),
-                                placeholder: 'Ex: 4ème B',
-                                style: { width: '100%', padding: '12px', borderRadius: '8px', border: '2px solid #ddd', fontSize: '1rem' }
-                            })
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "Carte"),
+                            e("div", { className: "xp-value" }, `${currentFlashcard + 1}/${flashcardsData.length}`)
                         )
                     ),
-                    e('div', { className: 'btn-group' },
-                        e('button', { className: 'btn btn-success btn-block', onClick: startGame }, '🚀 DÉMARRER'),
-                        e('button', { className: 'btn btn-secondary btn-block', onClick: () => setMode('menu') }, '← RETOUR')
+                    e("div", { className: "content-panel" },
+                        e("div", { className: "panel-header" },
+                            e("div", { className: "panel-icon" }, "📚"),
+                            e("div", { className: "panel-title" }, "Pionniers de la Recherche")
+                        ),
+                        e("div", { className: "panel-body" },
+                            e("div", { className: "flashcard-container" },
+                                e("div", {
+                                    className: `flashcard ${flashcardFlipped ? "flipped" : ""}`,
+                                    onClick: () => setFlashcardFlipped(!flashcardFlipped)
+                                },
+                                    e("div", { className: "flashcard-face flashcard-front" },
+                                        e("div", { className: "flashcard-question" }, card.question),
+                                        e("div", { className: "flashcard-hint" }, card.hint)
+                                    ),
+                                    e("div", { className: "flashcard-face flashcard-back" },
+                                        e("div", {
+                                            className: "flashcard-answer",
+                                            dangerouslySetInnerHTML: { __html: card.answer }
+                                        })
+                                    )
+                                )
+                            ),
+                            e("div", { className: "flashcard-nav" },
+                                e("button", {
+                                    className: "nav-btn",
+                                    onClick: prevFlashcard,
+                                    disabled: currentFlashcard === 0
+                                }, "◄ PRÉC"),
+                                e("button", {
+                                    className: "nav-btn",
+                                    onClick: nextFlashcard
+                                }, currentFlashcard < flashcardsData.length - 1 ? "SUIV ►" : "NIVEAU 2 ►")
+                            )
+                        )
                     )
                 );
             }
 
-            // --- LOAD ---
-            if (mode === 'load') {
-                const handleLoad = () => {
-                    const result = decodeSaveCode(inputCode);
-                    if (!result.valid) {
-                        setLoadError(result.error);
-                        return;
-                    }
-                    const d = result.data;
-                    setNom(d.n || 'Anonyme');
-                    setClasse(d.c || '');
-                    setCurrentLevel(d.l || 1);
-                    setXp(d.x || 0);
-                    setQuizScore(d.q || 0);
-                    setDojoScore(d.dj || 0);
-                    setCardIdx(0);
-                    setQuestionIdx(0);
-                    setScenarioIdx(0);
-                    
-                    if (d.f) {
-                        setMode('report');
-                    } else {
-                        setMode('game');
-                    }
-                    setLoadError('');
-                };
+            function renderQuiz() {
+                const question = quizData[currentQuiz];
 
-                return e('div', { className: 'app-container' },
-                    e(Header, { showProgress: false }),
-                    e('div', { className: 'card load-section' },
-                        e('h3', { style: { marginBottom: '20px' } }, '📂 Charger une Progression'),
-                        e('p', { style: { marginBottom: '15px', opacity: 0.8 } }, 
-                            'Colle ici le code de sauvegarde que tu as gardé :'
+                return e("div", { className: "app-container" },
+                    e("div", { className: "header" },
+                        e("div", { className: "pillar-icon" }, "📜"),
+                        e("h1", { className: "glitch-title" }, MODULE_TITLE),
+                        e("div", { className: "subtitle" }, "Niveau 2 : Compréhension")
+                    ),
+                    e("div", { className: "progress-bar" },
+                        e("div", { className: "progress-node completed" }, "✓"),
+                        e("div", { className: "progress-node active" }, "2"),
+                        e("div", { className: "progress-node" }, "3")
+                    ),
+                    e("div", { className: "xp-display" },
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "XP"),
+                            e("div", { className: "xp-value" }, playerData.xp)
                         ),
-                        e('textarea', {
-                            value: inputCode,
-                            onChange: (ev) => { setInputCode(ev.target.value); setLoadError(''); },
-                            placeholder: 'Colle ton code ici...'
-                        }),
-                        loadError && e('div', { style: { color: '#e74c3c', marginTop: '10px', fontWeight: 'bold' } }, 
-                            `⚠️ ${loadError}`
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "Score Quiz"),
+                            e("div", { className: "xp-value" }, playerData.quizScore)
+                        ),
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "Question"),
+                            e("div", { className: "xp-value" }, `${currentQuiz + 1}/${quizData.length}`)
                         )
                     ),
-                    e('div', { className: 'btn-group' },
-                        e('button', { className: 'btn btn-success btn-block', onClick: handleLoad }, '✓ CHARGER'),
-                        e('button', { className: 'btn btn-secondary btn-block', onClick: () => setMode('menu') }, '← RETOUR')
+                    e("div", { className: "content-panel" },
+                        e("div", { className: "panel-header" },
+                            e("div", { className: "panel-icon" }, "🔍"),
+                            e("div", { className: "panel-title" }, "Analyse Scientifique")
+                        ),
+                        e("div", { className: "panel-body" },
+                            e("div", { className: "quiz-question" }, question.question),
+                            e("div", { className: "quiz-options" },
+                                question.options.map((opt, idx) => {
+                                    let optClass = "quiz-option";
+                                    if (showQuizFeedback) {
+                                        if (idx === question.correct) optClass += " correct";
+                                        else if (idx === selectedAnswer) optClass += " incorrect";
+                                    } else if (idx === selectedAnswer) {
+                                        optClass += " selected";
+                                    }
+
+                                    return e("div", {
+                                        key: idx,
+                                        className: optClass,
+                                        onClick: () => selectQuizAnswer(idx)
+                                    },
+                                        e("div", { className: "option-marker" }, String.fromCharCode(65 + idx)),
+                                        e("div", { className: "option-text" }, opt)
+                                    );
+                                })
+                            ),
+                            showQuizFeedback && e("div", {
+                                className: `feedback-box ${selectedAnswer !== question.correct ? "incorrect-feedback" : ""}`
+                            },
+                                e("div", { className: "feedback-title" },
+                                    selectedAnswer === question.correct ? "✓ EXACT" : "✗ PAS TOUT À FAIT"
+                                ),
+                                e("p", null, question.feedback)
+                            ),
+                            e("div", { style: { textAlign: "center", marginTop: "25px" } },
+                                !showQuizFeedback ?
+                                    e("button", {
+                                        className: "action-btn",
+                                        onClick: validateQuizAnswer,
+                                        disabled: selectedAnswer === null
+                                    }, "[ VALIDER ]") :
+                                    e("button", {
+                                        className: "action-btn",
+                                        onClick: nextQuizQuestion
+                                    }, currentQuiz < quizData.length - 1 ? "[ SUIVANT ]" : "[ NIVEAU 3 ]")
+                            )
+                        )
                     )
                 );
             }
 
-            // --- GAME ---
-            if (mode === 'game') {
-                // NIVEAU 1 : FLASHCARDS
-                if (currentLevel === 1) {
-                    const cards = MODULE_DATA.niveau1.cartes;
-                    
-                    return e('div', { className: 'app-container' },
-                        e(Header, { showProgress: true, xp }),
-                        e(ProgressBar, { currentLevel, xp }),
-                        e(LevelIndicator, { current: currentLevel }),
-                        e('h2', { style: { textAlign: 'center' } }, '📚 NIVEAU 1 : THÉORIE'),
-                        e('div', { className: 'card-counter' }, `Carte ${cardIdx + 1} / ${cards.length}`),
-                        e(Flashcard, {
-                            card: cards[cardIdx],
-                            isLast: cardIdx === cards.length - 1,
-                            onNext: () => setCardIdx(cardIdx + 1),
-                            onComplete: () => {
-                                setXp(xp + MODULE_DATA.niveau1.xp_reward);
-                                setCurrentLevel(2);
-                                setCardIdx(0);
-                            }
-                        })
-                    );
-                }
+            function renderScenarios() {
+                const scenario = scenarioData[currentScenario];
 
-                // NIVEAU 2 : QUIZ
-                if (currentLevel === 2) {
-                    const questions = MODULE_DATA.niveau2.questions;
-                    
-                    const handleQuizAnswer = (correct) => {
-                        if (correct) setQuizScore(quizScore + 25);
-                        
-                        if (questionIdx < questions.length - 1) {
-                            setQuestionIdx(questionIdx + 1);
-                        } else {
-                            setXp(xp + MODULE_DATA.niveau2.xp_reward);
-                            setCurrentLevel(3);
-                            setQuestionIdx(0);
-                        }
-                    };
-
-                    return e('div', { className: 'app-container' },
-                        e(Header, { showProgress: true, xp }),
-                        e(ProgressBar, { currentLevel, xp }),
-                        e(LevelIndicator, { current: currentLevel }),
-                        e('h2', { style: { textAlign: 'center' } }, '🔍 NIVEAU 2 : ANALYSE'),
-                        e('div', { className: 'card-counter' }, `Question ${questionIdx + 1} / ${questions.length}`),
-                        e(QuizQuestion, {
-                            key: questionIdx, // Force re-render on new question
-                            question: questions[questionIdx],
-                            onAnswer: handleQuizAnswer
-                        })
-                    );
-                }
-
-                // NIVEAU 3 : DOJO
-                if (currentLevel === 3) {
-                    const scenarios = MODULE_DATA.niveau3.scenarios;
-                    
-                    const handleDojoAnswer = (impact) => {
-                        setDojoScore(dojoScore + Math.max(0, impact));
-                        
-                        if (scenarioIdx < scenarios.length - 1) {
-                            setScenarioIdx(scenarioIdx + 1);
-                        } else {
-                            setXp(xp + MODULE_DATA.niveau3.xp_reward);
-                            setMode('report');
-                        }
-                    };
-
-                    return e('div', { className: 'app-container' },
-                        e(Header, { showProgress: true, xp }),
-                        e(ProgressBar, { currentLevel, xp }),
-                        e(LevelIndicator, { current: currentLevel }),
-                        e('h2', { style: { textAlign: 'center' } }, '⚔️ NIVEAU 3 : DOJO'),
-                        e('div', { className: 'card-counter' }, `Scénario ${scenarioIdx + 1} / ${scenarios.length}`),
-                        e(DojoScenario, {
-                            key: scenarioIdx,
-                            scenario: scenarios[scenarioIdx],
-                            onAnswer: handleDojoAnswer
-                        })
-                    );
-                }
-            }
-
-            // --- REPORT ---
-            if (mode === 'report') {
-                return e('div', { className: 'app-container' },
-                    e(Report, {
-                        progress: { ...progress, xp: xp + (currentLevel > 3 ? 0 : MODULE_DATA.niveau3.xp_reward) },
-                        onRestart: () => { resetProgress(); setMode('register'); },
-                        onMenu: () => { resetProgress(); setMode('menu'); }
-                    })
+                return e("div", { className: "app-container" },
+                    e("div", { className: "header" },
+                        e("div", { className: "pillar-icon" }, "📜"),
+                        e("h1", { className: "glitch-title" }, MODULE_TITLE),
+                        e("div", { className: "subtitle" }, "Niveau 3 : Cas Pratiques")
+                    ),
+                    e("div", { className: "progress-bar" },
+                        e("div", { className: "progress-node completed" }, "✓"),
+                        e("div", { className: "progress-node completed" }, "✓"),
+                        e("div", { className: "progress-node active" }, "3")
+                    ),
+                    e("div", { className: "xp-display" },
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "XP Total"),
+                            e("div", { className: "xp-value" }, playerData.xp)
+                        ),
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "Score"),
+                            e("div", { className: "xp-value" }, playerData.score)
+                        ),
+                        e("div", { className: "xp-box" },
+                            e("div", { className: "xp-label" }, "Scénario"),
+                            e("div", { className: "xp-value" }, `${currentScenario + 1}/${scenarioData.length}`)
+                        )
+                    ),
+                    e("div", { className: "content-panel" },
+                        e("div", { className: "panel-header" },
+                            e("div", { className: "panel-icon" }, "⚖️"),
+                            e("div", { className: "panel-title" }, scenario.title)
+                        ),
+                        e("div", { className: "panel-body" },
+                            e("div", { className: "scenario-context" }, scenario.context),
+                            e("div", { className: "scenario-intro" }, scenario.intro),
+                            !showScenarioResult ?
+                                e("div", { className: "choices" },
+                                    scenario.choices.map((choice, idx) =>
+                                        e("button", {
+                                            key: idx,
+                                            className: "choice-btn",
+                                            onClick: () => makeScenarioChoice(idx)
+                                        }, choice.text)
+                                    )
+                                ) :
+                                e("div", { className: "choice-result" },
+                                    e("p", { style: { marginBottom: "15px" } }, scenario.choices[scenarioChoice].result),
+                                    e("div", { className: "impact-score" },
+                                        Object.entries(scenario.choices[scenarioChoice].impact).map(([key, val]) =>
+                                            e("div", {
+                                                key: key,
+                                                className: `impact-item ${val > 0 ? "positive" : "negative"}`
+                                            }, `${key}: ${val > 0 ? "+" : ""}${val}`)
+                                        )
+                                    ),
+                                    e("div", { style: { textAlign: "center", marginTop: "25px" } },
+                                        e("button", {
+                                            className: "action-btn",
+                                            onClick: nextScenario
+                                        }, currentScenario < scenarioData.length - 1 ? "[ SUIVANT ]" : "[ TERMINER ]")
+                                    )
+                                )
+                        )
+                    )
                 );
             }
 
-            return e('div', { className: 'app-container' }, 'Chargement...');
+            function renderComplete() {
+                return e("div", { className: "app-container" },
+                    e("div", { className: "completion-screen" },
+                        e("div", { className: "completion-icon" }, "✅"),
+                        e("h1", { className: "completion-title" }, "MODULE COMPLÉTÉ"),
+                        e("p", { className: "completion-subtitle" },
+                            `Bravo ${playerData.name} ! Tu maîtrises maintenant les fondements scientifiques.`
+                        ),
+                        e("div", { className: "stats-grid" },
+                            e("div", { className: "stat-card" },
+                                e("div", { className: "stat-value" }, playerData.score),
+                                e("div", { className: "stat-label" }, "Score Total")
+                            ),
+                            e("div", { className: "stat-card" },
+                                e("div", { className: "stat-value" }, playerData.xp),
+                                e("div", { className: "stat-label" }, "XP Gagnés")
+                            ),
+                            e("div", { className: "stat-card" },
+                                e("div", { className: "stat-value" }, playerData.quizScore),
+                                e("div", { className: "stat-label" }, "Score Quiz")
+                            ),
+                            e("div", { className: "stat-card" },
+                                e("div", { className: "stat-value" }, playerData.scenarioScore),
+                                e("div", { className: "stat-label" }, "Score Scénarios")
+                            )
+                        ),
+                        e("div", { className: "content-panel", style: { marginTop: "30px", textAlign: "left" } },
+                            e("div", { className: "panel-header" },
+                                e("div", { className: "panel-icon" }, "💡"),
+                                e("div", { className: "panel-title" }, "Ce Que Tu As Appris")
+                            ),
+                            e("div", { className: "panel-body" },
+                                e("p", null,
+                                    "En 15 ans (1969-1982), la recherche scientifique a transformé le harcèlement de 'brutalités normales' en ", 
+                                    e("strong", null, "problème de santé publique mesurable"), "."
+                                ),
+                                e("p", { style: { marginTop: "15px" } },
+                                    "Les 3 critères d'Olweus (Intention, Répétition, Déséquilibre) ont permis de ", 
+                                    e("strong", null, "distinguer harcèlement et conflit"),
+                                    ", rendant possible la prévention ciblée."
+                                ),
+                                e("p", { style: { marginTop: "15px" } },
+                                    "Prochain module : tu verras comment cette science s'est traduite en ", 
+                                    e("strong", { style: { color: "var(--history-amber)" } }, "lois, protocoles, et protections juridiques"), 
+                                    " dans les années 1990-2010."
+                                )
+                            )
+                        )
+                    )
+                );
+            }
+
+            switch (gameState) {
+                case "intro": return renderIntro();
+                case "flashcards": return renderFlashcards();
+                case "quiz": return renderQuiz();
+                case "scenarios": return renderScenarios();
+                case "complete": return renderComplete();
+                default: return renderIntro();
+            }
         }
 
-        // --- RENDER ---
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(e(App));
+        ReactDOM.createRoot(document.getElementById("root")).render(e(App));
     </script>
-
 </body>
 </html>
