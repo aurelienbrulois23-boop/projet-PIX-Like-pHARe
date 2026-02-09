@@ -603,7 +603,7 @@
             if(INPUT.left && this.x > 70) this.x -= speed;
             if(INPUT.right && this.x < canvas.width - 70) this.x += speed;
             if(INPUT.up && this.y > 70) this.y -= speed;
-            if(INPUT.down && this.y < canvas.height - 70) this.y -= speed;
+            if(INPUT.down && this.y < canvas.height - 70) this.y += speed;  // CORRIGÉ : += au lieu de -=
 
             // Tir
             if(INPUT.fire && this.fireDelay <= 0) {
@@ -719,8 +719,8 @@
             this.x = px + Math.cos(this.angle) * this.radius;
             this.y = py + Math.sin(this.angle) * this.radius;
 
-            // Tir automatique
-            if(GAME.frame % 35 === this.id * 7 && enemies.length > 0) {
+            // Tir automatique (contre ennemis normaux OU boss)
+            if(GAME.frame % 35 === this.id * 7 && (enemies.length > 0 || boss)) {
                 bullets.push(new Bullet(this.x, this.y, 0, -12, 'PLAYER'));
             }
         }
